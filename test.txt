@@ -1,0 +1,9 @@
+func ss() {
+	println("11")
+	var v = 1
+}
+b := 2
+var c,d = 1,2
+println("test")
+println(a+b+c+d)
+// 2q le fmt.Println(<ls /home/shizuo>)

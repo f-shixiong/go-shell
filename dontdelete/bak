@@ -1,0 +1,53 @@
+package main
+
+import (
+	"flag"
+	"fmt"
+	"github.com/f-shixiong/go-shell/lib"
+	"go/ast"
+	"go/parser"
+	"go/token"
+	"io/ioutil"
+	"os"
+	_ "strings"
+)
+
+//var file = flag.String("p", "", "import path")
+const (
+	ONLYONEFILE = "default"
+	CONTEXT     = "package main\n%s"
+)
+
+var runNode = &lib.RunNode{}
+
+func main() {
+	fmt.Println("goshell 1.0 by dy.com")
+	flag.Parse()
+	args := flag.Args()
+	if len(args) == 0 {
+		os.Exit(0)
+	}
+	data, err := ioutil.ReadFile(args[0])
+	if err != nil {
+		panic(err)
+	}
+	fset := token.NewFileSet()
+	fmt.Println(fmt.Sprintf(CONTEXT, string(data)))
+	f, err := parser.ParseFile(fset, "", fmt.Sprintf(CONTEXT, string(data)), 0)
+	if err != nil {
+		panic(err)
+	}
+	ast.Print(fset, f)
+
+	for _, d := range f.Decls {
+		switch d.(type) {
+		case *ast.GenDecl:
+			lib.LoadGenDecl(d.(*ast.GenDecl), runNode)
+		case *ast.FuncDecl:
+			lib.LoadFuncDecl(d.(*ast.FuncDecl), runNode)
+		default:
+			fmt.Println("o no")
+		}
+	}
+	runNode.RunMain()
+}
