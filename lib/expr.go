@@ -48,7 +48,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		Error("there is should happend_3 %#v \n", x)
 	case *ast.ArrayType:
 		//TODO
-		Error("there is should happend_4 %#v \n", x)
+		return make([]interface{}, 0)
 	case *ast.ChanType:
 		Error("there is should happend_4.1 %#v \n", x)
 	case *ast.Ellipsis:
@@ -85,6 +85,8 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		switch l := l.(type) {
 		case map[interface{}]interface{}:
 			return l[CompileExpr(x.Index, r)]
+		case []interface{}:
+			return l[cast.ToInt(CompileExpr(x.Index, r))]
 		default:
 			Error("o it dont  ha %#v", l)
 		}
@@ -112,6 +114,9 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 	case *ast.UnaryExpr:
 		//TODO
 		Error("there is should happend_15 %#v \n", x)
+	case nil:
+		noret = true
+		return nil
 	default:
 		//TODO
 		Error("there is should happend_16 %#v \n", x)

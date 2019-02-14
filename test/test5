@@ -1,0 +1,3 @@
+var aa = make([]string,0)
+aa = append(aa,"f-shixiong")
+println(aa[0])

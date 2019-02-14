@@ -7,3 +7,5 @@ var c,d = 1,2
 println("test")
 println(b+c+d)
 // 2q le fmt.Println(<ls /home/shizuo>)
+
+var f string

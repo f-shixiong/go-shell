@@ -1,4 +1,4 @@
-default:dev1 dev2 dev3 dev4
+default:dev1 dev2 dev3 dev4 dev5
 dev1:
 	@echo "====test leve 1===="
 	@echo "> 只是能run <"
@@ -15,3 +15,7 @@ dev4:
 	@echo "====test leve 4===="
 	@echo "> 支持for循环 <"
 	@go run main.go test/test4
+dev5:
+	@echo "====test leve 5===="
+	@echo "> 支持append <"
+	@go run main.go test/test5

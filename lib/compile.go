@@ -54,7 +54,7 @@ func CompileDeclStmt(stmt *ast.DeclStmt, r *RunNode) {
 
 func CompileVarSpec(stmt *ast.ValueSpec, r *RunNode) {
 	for i, n := range stmt.Names {
-		Debug("==> name : %+v, value : %#v \n", n.Name, stmt.Values[i])
+		Debug("==> name : %+v, value : %#v \n", n.Name, stmt.Values)
 		v := Var{}
 		v.k = n.Name
 		if len(stmt.Values) > i {

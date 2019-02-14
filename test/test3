@@ -2,3 +2,4 @@ var a = make(map[string]string,0)
 a["f"]="b"
 a["d"]="c"
 println(a["f"])
+
