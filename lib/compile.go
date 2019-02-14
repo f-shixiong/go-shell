@@ -7,15 +7,17 @@ import (
 )
 
 func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
-	var mp = make(map[string]interface{}, 0)
+	if r.VarMap == nil {
+		r.VarMap = make(map[string]interface{}, 0)
+	}
 	for i, k := range stmt.Lhs {
 		switch k.(type) {
 		case *ast.Ident:
 			if len(stmt.Rhs) >= i {
 				//*ast.BasicLit
-				mp[k.(*ast.Ident).Name] = stmt.Rhs[i]
+				r.VarMap[k.(*ast.Ident).Name] = CompileExpr(stmt.Rhs[i], r)
 			} else {
-				mp[k.(*ast.Ident).Name] = stmt.Rhs[0]
+				r.VarMap[k.(*ast.Ident).Name] = CompileExpr(stmt.Rhs[0], r)
 
 			}
 		default:
@@ -29,14 +31,13 @@ func CompileDeclStmt(stmt *ast.DeclStmt, r *RunNode) {
 	case *ast.GenDecl:
 		CompileGenDecl(stmt.Decl.(*ast.GenDecl), r)
 	default:
-		fmt.Printf("o no = %+v, type =%+v \n", stmt.Decl, reflect.TypeOf(stmt.Decl))
-
+		Error("o no = %+v, type =%+v \n", stmt.Decl, reflect.TypeOf(stmt.Decl))
 	}
 }
 
 func CompileVarSpec(stmt *ast.ValueSpec, r *RunNode) {
 	for i, n := range stmt.Names {
-		fmt.Printf("==> name : %+v, value : %#v \n", n.Name, stmt.Values[i])
+		Debug("==> name : %+v, value : %#v \n", n.Name, stmt.Values[i])
 		v := Var{}
 		v.k = n.Name
 		if len(stmt.Values) > i {
@@ -60,13 +61,13 @@ func CompileGenDecl(d *ast.GenDecl, r *RunNode) {
 		case *ast.ValueSpec:
 			CompileVarSpec(spe, r)
 		default:
-			fmt.Println("o no")
+			Error("o no")
 		}
 	}
 }
 
 func CompileImportSpec(spe *ast.ImportSpec, r *RunNode) {
-	//fmt.Printf(" =======>> %s\n", spe.Path.Value)
+	//Debug(" =======>> %s\n", spe.Path.Value)
 	//TODO
 	// 1\ import so
 	// 2\ import r
@@ -83,7 +84,7 @@ func CompileFuncDecl(d *ast.FuncDecl, r *RunNode) {
 		case *ast.ExprStmt:
 			CompileExpr(stmt.X, r)
 		default:
-			fmt.Printf("undefind type ->  %+v , value -> %+v\n", reflect.TypeOf(stmt), stmt)
+			Debug("undefind type ->  %+v , value -> %+v\n", reflect.TypeOf(stmt), stmt)
 		}
 	}
 }

@@ -18,7 +18,7 @@ type RunNode struct {
 	Vars    []Var
 	VarMap  map[string]interface{}
 	childs  []*RunNode //TODO set father
-	exprMap []expr
+	FuncMap map[string]*ast.FuncDecl
 }
 
 func (r *RunNode) Get(scopes []string) Var {

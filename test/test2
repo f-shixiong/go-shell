@@ -1,0 +1,5 @@
+func ss(i int) {
+	println(i)
+}
+b := 2
+ss(b)

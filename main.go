@@ -49,13 +49,13 @@ func main() {
 			if e2 != nil {
 				continue
 			}
-			fmt.Println(let)
+			lib.Debug(let)
 			let = ""
 			status = 0
 			files = append(files, file)
 
 		} else {
-			fmt.Println(let)
+			lib.Debug(let)
 			files = append(files, file)
 			let = ""
 			status = 0
@@ -77,10 +77,13 @@ func main() {
 			if d.Name.String() == "main" {
 				lib.CompileFuncDecl(d, runNode)
 			} else {
-				lib.FuncMap[d.Name.String()] = d
+				if runNode.FuncMap == nil {
+					runNode.FuncMap = make(map[string]*ast.FuncDecl, 0)
+				}
+				runNode.FuncMap[d.Name.String()] = d
 			}
 		default:
-			fmt.Println("no----0v0----no")
+			lib.Error("no----0v0----no")
 		}
 	}
 
