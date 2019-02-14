@@ -6,11 +6,14 @@ import (
 	_ "reflect"
 )
 
-func Invock(e expr, r *RunNode) {
+func Invock(e expr, r *RunNode) (ret interface{}) {
 	Debug("------------------------------------")
 	switch e.method {
 	case "println":
 		fmt.Println(e.args)
+	case "make":
+		//TODO already make
+		ret = e.args[0]
 	default:
 		if f, ok := r.FuncMap[e.method]; ok {
 			InvockCos(f, r, e)
@@ -18,6 +21,7 @@ func Invock(e expr, r *RunNode) {
 		}
 		Error("how it happend, method = %s , entity =%#v", e.method, e)
 	}
+	return
 }
 
 func InvockImport() {

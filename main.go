@@ -62,7 +62,7 @@ func main() {
 		}
 	}
 	if status != 0 {
-		fmt.Printf("paser not work lt = %s,err=%+v \n", let, err)
+		fmt.Printf("paser not work lt = \n%s,err=%+v \n", let, err)
 		os.Exit(0)
 	}
 	for _, f := range files {

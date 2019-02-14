@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"fmt"
 	"github.com/spf13/cast"
 	"go/ast"
 	"go/token"
@@ -59,7 +58,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 	case *ast.InterfaceType:
 		Error("there is should happend_4.4 %#v \n", x)
 	case *ast.MapType:
-		Error("there is should happend_4.5 %#v \n", x)
+		return make(map[interface{}]interface{}, 0)
 	case *ast.BadExpr:
 		//TODO
 		Error("there is should happend_5 %#v \n", x)
@@ -74,16 +73,21 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 				args:   CompileArgs(x.Args, r),
 				//TODO t
 			}
-			Invock(e, r)
+			return Invock(e, r)
 		default:
-			fmt.Println("there is should not happd")
+			Error("there is should not happd")
 		}
 
 	case *ast.Ident:
 		ret = r.VarMap[x.Name]
 	case *ast.IndexExpr:
-		//TODO
-		Error("there is should happend_7 %#v \n", x)
+		l := CompileExpr(x.X, r)
+		switch l := l.(type) {
+		case map[interface{}]interface{}:
+			return l[CompileExpr(x.Index, r)]
+		default:
+			Error("o it dont  ha %#v", l)
+		}
 	case *ast.SliceExpr:
 		//TODO
 		Error("there is should happend_8 %#v \n", x)

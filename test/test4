@@ -1,0 +1,14 @@
+var mmp = make(map[string]string,0)
+mmp["i_1"] = "v_1"
+mmp["i_2"] = "v_2"
+println(mmp)
+println("=======================")
+for k, v := range mmp {
+	println(k)
+	println(v)
+}
+
+println("=======================")
+for _,v := range mmp {
+	println(v)
+}
