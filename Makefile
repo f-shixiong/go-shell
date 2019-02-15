@@ -42,3 +42,5 @@ dev10:
 	@echo "====test leve 10===="
 	@echo "> 支持import       <"
 	@go run main.go test/test9
+build:
+	go build
