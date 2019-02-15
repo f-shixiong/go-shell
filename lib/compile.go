@@ -41,6 +41,18 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 			realLeft := CompileExpr(right, r)
 			r.VarMap[k.X.(*ast.Ident).Name] = &realLeft
 
+		case *ast.SelectorExpr:
+			Debug("x = %#v,sel = %#v,vars= %#v", k.X, k.Sel, r.VarMap)
+			t := CompileExpr(k.X, r)
+			switch t := t.(type) {
+			case Struct:
+				Debug("k = %#v, v = %#v, r = %#v", k.Sel.Name, CompileExpr(right, r), right)
+				t.vals[k.Sel.Name] = CompileExpr(right, r)
+			default:
+				Error("should not %#v", t)
+			}
+			//Test("kk = %#v, vv = %#v", k.X.(*ast.Ident).Name, t)
+			r.VarMap[k.X.(*ast.Ident).Name] = t
 		default:
 			Error("o no , this is what %#v ", k)
 		}
@@ -71,45 +83,18 @@ func CompileGenDecl(d *ast.GenDecl, r *RunNode) {
 	}
 }
 
-func CompileFuncDecl(d *ast.FuncDecl, r *RunNode) (ret []interface{}) {
-	for _, stmt := range d.Body.List {
-		switch stmt := stmt.(type) {
-		case *ast.AssignStmt:
-			CompileAssignStmt(stmt, r)
-		case *ast.DeclStmt:
-			CompileDeclStmt(stmt, r)
-		case *ast.ExprStmt:
-			CompileExpr(stmt.X, r)
-		case *ast.RangeStmt:
-			Debug("range-> 0 : %#v, 1 : %#v, 2 : %#v, 3: %#v", stmt.Key, stmt.Value, stmt.X, stmt.Body.List)
-			CompileRangeStmt(stmt, r)
-		case *ast.ReturnStmt:
-			for _, result := range stmt.Results {
-				ret = append(ret, CompileExpr(result, r))
-			}
-
-		default:
-			Error("undefind value -> %#v", stmt)
-		}
-	}
-	return
-}
-
 func CompileRangeStmt(stmt *ast.RangeStmt, r *RunNode) {
 	xs := CompileExpr(stmt.X, r)
 	switch xs := xs.(type) {
 	case map[interface{}]interface{}:
 		for k, v := range xs {
-			rs := &RunNode{
-				Father: r,
-				VarMap: make(map[string]interface{}, 0),
-			}
-			rs.VarMap[stmt.Key.(*ast.Ident).Name] = k
-			rs.VarMap[stmt.Value.(*ast.Ident).Name] = v
+			rc := r.Child()
+			rc.VarMap[stmt.Key.(*ast.Ident).Name] = k
+			rc.VarMap[stmt.Value.(*ast.Ident).Name] = v
 			f := &ast.FuncDecl{
 				Body: stmt.Body,
 			}
-			CompileFuncDecl(f, rs)
+			CompileFuncDecl(f, rc)
 		}
 	default:
 		Error("o dont")

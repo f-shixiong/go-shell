@@ -86,8 +86,10 @@ func CompileSelectorExpr(x *ast.SelectorExpr, r *RunNode) (ret interface{}) {
 	switch l := l.(type) {
 	case map[interface{}]interface{}:
 		return l[x.Sel.Name]
+	case Struct:
+		return l.vals[x.Sel.Name]
 	default:
-		Error("what we should do")
+		Error("what we should do l %#v", l)
 	}
 	return
 }

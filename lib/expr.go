@@ -17,6 +17,7 @@ type expr struct {
 	t        int
 	method   string
 	instance interface{}
+	left     interface{}
 }
 
 func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
@@ -47,16 +48,28 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		}
 		switch tp := tp.(type) {
 		case *ast.StructType:
-			mp := make(map[interface{}]interface{}, 0)
+			stu := Struct{
+				vals: make(map[interface{}]interface{}, 0),
+			}
 			for _, el := range x.Elts {
 				switch el := el.(type) {
 				case *ast.KeyValueExpr:
-					mp[el.Key.(*ast.Ident).Name] = CompileExpr(el.Value, r)
+					stu.vals[el.Key.(*ast.Ident).Name] = CompileExpr(el.Value, r)
 				default:
 					Error("tttttttt ")
 				}
 			}
-			return mp
+			return stu
+		case Struct:
+			for _, el := range x.Elts {
+				switch el := el.(type) {
+				case *ast.KeyValueExpr:
+					tp.vals[el.Key.(*ast.Ident).Name] = CompileExpr(el.Value, r)
+				default:
+					Error("tttttttt ")
+				}
+			}
+			return tp
 		default:
 			Error("o no  unsupport %#v", tp)
 		}
@@ -88,11 +101,20 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 			e := expr{
 				method: f.Name,
 				args:   CompileArgs(x.Args, r),
+
 				//TODO t
 			}
 			ret = Invock(e, r)
+		case *ast.SelectorExpr:
+			Debug("x = %#v, sel = %#v", f.X, f.Sel)
+			e := expr{
+				method: f.Sel.Name,
+				args:   CompileArgs(x.Args, r),
+				left:   CompileExpr(f.X, r),
+			}
+			ret = Invock(e, r)
 		default:
-			Error("there is should not happd")
+			Error("there is should not happd %#v", f)
 		}
 
 	case *ast.Ident:
@@ -135,7 +157,13 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		}
 
 	case *ast.StructType:
-		Error("there is should happend_13 %#v \n", x)
+		//TODO field
+		return Struct{
+			vals:     make(map[interface{}]interface{}, 0),
+			funcMap:  make(map[string]*ast.FuncDecl, 0),
+			funcRMap: make(map[string]*RunNode, 0),
+		}
+
 	case *ast.TypeAssertExpr:
 		//TODO
 		Error("there is should happend_14 %#v \n", x)

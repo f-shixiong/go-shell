@@ -1,0 +1,25 @@
+println(">> define T")
+type T struct {
+	Name string
+}
+
+println(">> define getname of T")
+func (t T)GetName() string{
+	return t.Name
+}
+
+println(">> define setName of &T")
+func (t *T)SetName(n string) string{
+	t.Name = n
+}
+
+println(">> define t T")
+t := T{
+	Name: "tiger2",
+}
+println(">> do t.SetName(\"123\")")
+t.SetName("123")
+
+println(">> print t.GetName2()")
+println(t.GetName())
+

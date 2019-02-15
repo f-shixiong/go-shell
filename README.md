@@ -16,9 +16,10 @@ cd go-shell && go build
 #### 2.13-支持多层结构体
 #### 2.14-支持指针
 #### 2.15-支持return
+#### 2.15-支持import
+#### 2.15-支持struct-func doing
 
 ### TODO
-#### 支持import
 #### 支持shell
 #### 支持全部二进制action
 #### 支持全部数据类型

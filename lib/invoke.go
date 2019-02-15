@@ -3,10 +3,11 @@ package lib
 import (
 	"fmt"
 	"go/ast"
-	_ "reflect"
+	"plugin"
+	"reflect"
 )
 
-func Invock(e expr, r *RunNode) (ret interface{}) {
+func InvockConst(e expr, r *RunNode) (ret interface{}) {
 	Debug("------------------------------------")
 	switch e.method {
 	case "println":
@@ -26,7 +27,8 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 		}
 	default:
 		if f := r.GetFunc(e.method); f != nil {
-			rs := InvockCos(f, r, e)
+			rc := r.Child()
+			rs := InvockCos(f, rc, e)
 			if len(rs) == 1 {
 				ret = rs[0]
 			} else {
@@ -39,15 +41,54 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 	return
 }
 
-func InvockImport() {
+func Invock(e expr, r *RunNode) (ret interface{}) {
+	if e.left == nil {
+		return InvockConst(e, r)
+	}
+	switch l := e.left.(type) {
+	case *plugin.Plugin:
+		method, err := l.Lookup(e.method)
+		if err != nil {
+			Error("not found method %+v", e.method)
+		}
+		ins := make([]reflect.Value, 0)
+		for _, i := range e.args {
+			ins = append(ins, reflect.ValueOf(i))
+		}
+		rm := reflect.ValueOf(method)
+		if !rm.IsValid() {
+			Error("method fail, method =  %#v", method)
+		}
+		rret := rm.Call(ins)
+		rets := make([]interface{}, 0)
+		for _, rr := range rret {
+			rets = append(rets, rr.Interface())
+		}
+		return rets
+	case Struct:
+		f, ok := l.funcMap[e.method]
+		if !ok {
+			Error("method not found %v , l = %#v", e.method, l)
+			return
+		}
+		rc, ok := l.funcRMap[e.method]
+		if ok {
+			for k, v := range rc.VarMap {
+				if v == SELF {
+					rc.VarMap[k] = l
+				}
+			}
+		}
+		Debug("rc.VarMap = %#v", rc.VarMap)
+		ret = InvockCos(f, rc, e)
+	default:
+		Error("unsupport left %#v", l)
+	}
 
+	return
 }
 
-func InvockCos(f *ast.FuncDecl, r *RunNode, e expr) (ret []interface{}) {
-	sr := &RunNode{
-		Father: r,
-		VarMap: make(map[string]interface{}, 0),
-	}
+func InvockCos(f *ast.FuncDecl, rc *RunNode, e expr) (ret []interface{}) {
 	if f.Type.Params != nil {
 		j := 0
 		for _, field := range f.Type.Params.List {
@@ -55,7 +96,7 @@ func InvockCos(f *ast.FuncDecl, r *RunNode, e expr) (ret []interface{}) {
 				if j >= len(e.args) {
 					Error("o this is crazzy")
 				}
-				sr.VarMap[n.Name] = e.args[j]
+				rc.VarMap[n.Name] = e.args[j]
 				j++
 			}
 		}
@@ -63,7 +104,6 @@ func InvockCos(f *ast.FuncDecl, r *RunNode, e expr) (ret []interface{}) {
 	if len(f.Body.List) > 0 {
 		Debug("f.body---> %#v  \n\n", f.Body.List[0])
 	}
-	ret = CompileFuncDecl(f, sr)
-	Test("e -> %#v, ret-> %#v", e, ret)
+	ret = CompileFuncDecl(f, rc)
 	return
 }

@@ -79,7 +79,7 @@ func main() {
 				if runNode.FuncMap == nil {
 					runNode.FuncMap = make(map[string]*ast.FuncDecl, 0)
 				}
-				runNode.FuncMap[d.Name.String()] = d
+				lib.LoadFunc(d, runNode)
 			}
 		default:
 			lib.Error("no----0v0----no")

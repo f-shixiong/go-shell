@@ -10,6 +10,9 @@ p := Person{
 	Age : 16,
 }
 
-println(">> print p and p.Name")
+println(">> print p")
 println(p)
+println(">> print p.Name")
 println(p.Name)
+println(">> print p.Age")
+println(p.Age)

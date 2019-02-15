@@ -1,3 +1,3 @@
 println(">> import fmt")
 import "fmt"
-fmt.Println("call fmt.Println")
+fmt.Println(">>call fmt.Println")
