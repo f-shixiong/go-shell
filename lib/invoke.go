@@ -17,7 +17,7 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 	case "append":
 		ret = append(e.args[0].([]interface{}), e.args[1])
 	default:
-		if f, ok := r.FuncMap[e.method]; ok {
+		if f := r.GetFunc(e.method); f != nil {
 			InvockCos(f, r, e)
 			return
 		}

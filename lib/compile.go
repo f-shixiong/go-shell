@@ -27,8 +27,8 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 			Debug("test--> %#v,%#v", k.X, k.Index)
 			Debug("test if com --> %#v", CompileExpr(k.Index, r))
 			//TODO 1l
-			o, ok := r.VarMap[k.X.(*ast.Ident).Name]
-			if !ok {
+			o := r.GetValue(k.X.(*ast.Ident).Name)
+			if o == nil {
 				Error("o no so sad ")
 				return
 			}
@@ -52,24 +52,6 @@ func CompileDeclStmt(stmt *ast.DeclStmt, r *RunNode) {
 	}
 }
 
-func CompileVarSpec(stmt *ast.ValueSpec, r *RunNode) {
-	for i, n := range stmt.Names {
-		Debug("==> name : %+v, value : %#v \n", n.Name, stmt.Values)
-		v := Var{}
-		v.k = n.Name
-		if len(stmt.Values) > i {
-			v.v = stmt.Values[i]
-		} else if len(stmt.Values) > 0 {
-			v.v = stmt.Values[0]
-		}
-		r.Vars = append(r.Vars, v)
-		if r.VarMap == nil {
-			r.VarMap = make(map[string]interface{}, 0)
-		}
-		r.VarMap[n.Name] = CompileExpr(v.v, r)
-	}
-}
-
 func CompileGenDecl(d *ast.GenDecl, r *RunNode) {
 	for _, spe := range d.Specs {
 		switch spe := spe.(type) {
@@ -77,18 +59,12 @@ func CompileGenDecl(d *ast.GenDecl, r *RunNode) {
 			CompileImportSpec(spe, r)
 		case *ast.ValueSpec:
 			CompileVarSpec(spe, r)
+		case *ast.TypeSpec:
+			CompileTypeSpec(spe, r)
 		default:
-			Error("o no")
+			Error("o no spe= %#v", spe)
 		}
 	}
-}
-
-func CompileImportSpec(spe *ast.ImportSpec, r *RunNode) {
-	//Debug(" =======>> %s\n", spe.Path.Value)
-	//TODO
-	// 1\ import so
-	// 2\ import r
-
 }
 
 func CompileFuncDecl(d *ast.FuncDecl, r *RunNode) {

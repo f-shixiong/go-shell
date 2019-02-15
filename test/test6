@@ -1,0 +1,15 @@
+type Person struct {
+	Name string
+	Age int
+}
+
+p := Person{
+	Name : "f",
+	Age : 16,
+}
+
+println(p)
+
+println("================")
+
+println(p.Name)

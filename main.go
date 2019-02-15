@@ -12,7 +12,6 @@ import (
 	"strings"
 )
 
-//var file = flag.String("p", "", "import path")
 const (
 	ONLYONEFILE  = "default"
 	CONTEXT      = "package main\n%s"

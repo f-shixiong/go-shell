@@ -41,8 +41,25 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 			Error("there is should happend_1 %#v \n", x)
 		}
 	case *ast.CompositeLit:
-		//TODO
-		Error("there is should happend_2 %#v \n", x)
+		tp := r.GetType(x.Type.(*ast.Ident).Name)
+		if tp == nil {
+			Error("con't find type %s", x.Type.(*ast.Ident).Name)
+		}
+		switch tp := tp.(type) {
+		case *ast.StructType:
+			mp := make(map[interface{}]interface{}, 0)
+			for _, el := range x.Elts {
+				switch el := el.(type) {
+				case *ast.KeyValueExpr:
+					mp[el.Key.(*ast.Ident).Name] = CompileExpr(el.Value, r)
+				default:
+					Error("tttttttt ")
+				}
+			}
+			return mp
+		default:
+			Error("o no  unsupport %#v", tp)
+		}
 	case *ast.FuncLit:
 		//TODO
 		Error("there is should happend_3 %#v \n", x)
@@ -79,7 +96,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		}
 
 	case *ast.Ident:
-		ret = r.VarMap[x.Name]
+		ret = r.GetValue(x.Name)
 	case *ast.IndexExpr:
 		l := CompileExpr(x.X, r)
 		switch l := l.(type) {
@@ -100,13 +117,11 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		//TODO
 		Error("there is should happend_10 %#v \n", x)
 	case *ast.SelectorExpr:
-		//TODO
-		Error("there is should happend_11 %#v \n", x)
+		return CompileSelectorExpr(x, r)
 	case *ast.StarExpr:
 		//TODO
 		Error("there is should happend_12 %#v \n", x)
 	case *ast.StructType:
-		//TODO
 		Error("there is should happend_13 %#v \n", x)
 	case *ast.TypeAssertExpr:
 		//TODO

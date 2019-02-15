@@ -77,3 +77,17 @@ func CompileBinary(x *ast.BinaryExpr, r *RunNode) (ret interface{}) {
         DEFINE   // :=
         ELLIPSIS // ...
 */
+
+func CompileSelectorExpr(x *ast.SelectorExpr, r *RunNode) (ret interface{}) {
+	Debug(">>>>> to_debg %#v ", x)
+	Debug(">>>>> to_debg %#v ", CompileExpr(x.X, r))
+	Debug(">>>>> to_debg %#v ", x.Sel)
+	l := CompileExpr(x.X, r)
+	switch l := l.(type) {
+	case map[interface{}]interface{}:
+		return l[x.Sel.Name]
+	default:
+		Error("what we should do")
+	}
+	return
+}
