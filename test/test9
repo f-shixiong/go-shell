@@ -1,10 +1,10 @@
+println(">> define func ss")
 func ss(a int) int {
 	return a+1
 }
-println("-------f1------")
+println(">> define int a")
 var a = 1
-println("-------f1------")
+println(">> define b and call ss")
 b := ss(a)
-println("-------f1------")
+println(">> print b")
 println(b)
-println("-------f1------")

@@ -41,6 +41,18 @@ dev9:
 dev10:
 	@echo "====test leve 10===="
 	@echo "> 支持import       <"
-	@go run main.go test/test9
+	@go run main.go test/test10
+dev11:
+	@echo "====test leve 11===="
+	@echo "> 支持shell       <"
+	@go run main.go test/test11
+dev12:
+	@echo "====test leve 12===="
+	@echo "> 支持全部二进制  <"
+	@go run main.go test/test12
+dev13: 
+	@echo "====test leve 13===="
+	@echo "> 支持全部数据类型<"
+	@go run main.go test/test13
 build:
 	go build

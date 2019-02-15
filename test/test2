@@ -1,5 +1,7 @@
+println(">> define func ss")
 func ss(i int) {
 	println(i)
 }
 b := 2
+println(">> use ss")
 ss(b)

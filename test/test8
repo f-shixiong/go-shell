@@ -1,13 +1,11 @@
+println(">> define i pointer")
 var i *int
-println("==========111==============")
+println(">> print a(point)")
 println(i)
-println("==========222==============")
+println(">> set i a point")
 i = new(int)
-println("==========333==============")
+println(">> set point i value -> 1 and print")
 *i = 1
-println("==========444==============")
-
 println(i)
-println("==========555==============")
+println(">> print i -> Value")
 println((*i))
-println("==========666==============")

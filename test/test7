@@ -1,23 +1,27 @@
+println(">> define T1 struct")
 type T1 struct {
 	Name string
 	Age int
 }
 
+println(">> define T2 truct use t1")
 type T2 struct {
 	Log string
 	t   T1
 }
 
+println(">> define t1 ")
 t1 := T1{
 	Name:"f",
 	Age : 1,
 }
 
+println(">> define t2 ")
 t2 := T2{
 	Log: "log",
 	t : t1,
 }
-println(">>>>>>>>")
+println(">> print t1 and t2 ")
 println(t2.t.Age)
 println(t2.Log)
 

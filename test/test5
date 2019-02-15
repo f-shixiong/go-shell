@@ -1,3 +1,6 @@
+println(">> define aa []string")
 var aa = make([]string,0)
+println(">> append f-shixiong to aa")
 aa = append(aa,"f-shixiong")
+println(">> print aa[0]")
 println(aa[0])

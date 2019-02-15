@@ -1,5 +1,8 @@
+println(">> define a map")
 var a = make(map[string]string,0)
+println(">> set value in a")
 a["f"]="b"
 a["d"]="c"
+println(">> print a[f]")
 println(a["f"])
 

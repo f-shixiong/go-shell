@@ -1,11 +1,15 @@
+println(">> define func ss but not use")
 func ss() {
 	println("11")
 	var v = 1
 }
+println(">> define b c d")
 b := 3
 var c,d = 1,2
+println(">> print b+c+d")
 println("test")
 println(b+c+d)
+println(">> use comment")
 // 2q le fmt.Println(<ls /home/shizuo>)
-
+println(">> define f but not set value")
 var f string

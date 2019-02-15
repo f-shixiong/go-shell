@@ -1,15 +1,15 @@
+println(">> define Person struct")
 type Person struct {
 	Name string
 	Age int
 }
 
+println(">> define p")
 p := Person{
 	Name : "f",
 	Age : 16,
 }
 
+println(">> print p and p.Name")
 println(p)
-
-println("================")
-
 println(p.Name)
