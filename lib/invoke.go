@@ -16,9 +16,22 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 		ret = e.args[0]
 	case "append":
 		ret = append(e.args[0].([]interface{}), e.args[1])
+	case "new":
+		switch e.args[0] {
+		case "int":
+			ret = new(int)
+		default:
+			Error("unsupport type %+v ", e.args[0])
+
+		}
 	default:
 		if f := r.GetFunc(e.method); f != nil {
-			InvockCos(f, r, e)
+			rs := InvockCos(f, r, e)
+			if len(rs) == 1 {
+				ret = rs[0]
+			} else {
+				ret = rs
+			}
 			return
 		}
 		Error("how it happend, method = %s , entity =%#v", e.method, e)
@@ -30,12 +43,11 @@ func InvockImport() {
 
 }
 
-func InvockCos(f *ast.FuncDecl, r *RunNode, e expr) {
+func InvockCos(f *ast.FuncDecl, r *RunNode, e expr) (ret []interface{}) {
 	sr := &RunNode{
 		Father: r,
 		VarMap: make(map[string]interface{}, 0),
 	}
-	_ = sr
 	if f.Type.Params != nil {
 		j := 0
 		for _, field := range f.Type.Params.List {
@@ -48,7 +60,10 @@ func InvockCos(f *ast.FuncDecl, r *RunNode, e expr) {
 			}
 		}
 	}
-
-	Debug("f.body---> %#v  \n\n", f.Body.List[0].(*ast.ExprStmt).X.(*ast.CallExpr).Args[0])
-	CompileFuncDecl(f, sr)
+	if len(f.Body.List) > 0 {
+		Debug("f.body---> %#v  \n\n", f.Body.List[0])
+	}
+	ret = CompileFuncDecl(f, sr)
+	Test("e -> %#v, ret-> %#v", e, ret)
+	return
 }

@@ -1,0 +1,23 @@
+type T1 struct {
+	Name string
+	Age int
+}
+
+type T2 struct {
+	Log string
+	t   T1
+}
+
+t1 := T1{
+	Name:"f",
+	Age : 1,
+}
+
+t2 := T2{
+	Log: "log",
+	t : t1,
+}
+println(">>>>>>>>")
+println(t2.t.Age)
+println(t2.Log)
+

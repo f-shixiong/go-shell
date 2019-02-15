@@ -1,0 +1,10 @@
+func ss(a int) int {
+	return a+1
+}
+println("-------f1------")
+var a = 1
+println("-------f1------")
+b := ss(a)
+println("-------f1------")
+println(b)
+println("-------f1------")

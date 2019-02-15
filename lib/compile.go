@@ -36,6 +36,10 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 			mp[CompileExpr(k.Index, r)] = CompileExpr(right, r)
 			r.VarMap[k.X.(*ast.Ident).Name] = mp
 			Debug("$%+v", CompileExpr(right, r))
+		case *ast.StarExpr:
+			Debug("test--> key = %#v,value = %#v", k.X, CompileExpr(right, r))
+			realLeft := CompileExpr(right, r)
+			r.VarMap[k.X.(*ast.Ident).Name] = &realLeft
 
 		default:
 			Error("o no , this is what %#v ", k)
@@ -67,7 +71,7 @@ func CompileGenDecl(d *ast.GenDecl, r *RunNode) {
 	}
 }
 
-func CompileFuncDecl(d *ast.FuncDecl, r *RunNode) {
+func CompileFuncDecl(d *ast.FuncDecl, r *RunNode) (ret []interface{}) {
 	for _, stmt := range d.Body.List {
 		switch stmt := stmt.(type) {
 		case *ast.AssignStmt:
@@ -79,10 +83,16 @@ func CompileFuncDecl(d *ast.FuncDecl, r *RunNode) {
 		case *ast.RangeStmt:
 			Debug("range-> 0 : %#v, 1 : %#v, 2 : %#v, 3: %#v", stmt.Key, stmt.Value, stmt.X, stmt.Body.List)
 			CompileRangeStmt(stmt, r)
+		case *ast.ReturnStmt:
+			for _, result := range stmt.Results {
+				ret = append(ret, CompileExpr(result, r))
+			}
+
 		default:
 			Error("undefind value -> %#v", stmt)
 		}
 	}
+	return
 }
 
 func CompileRangeStmt(stmt *ast.RangeStmt, r *RunNode) {

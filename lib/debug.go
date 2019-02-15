@@ -7,11 +7,18 @@ import (
 var openDebug = false
 
 func Debug(f string, args ...interface{}) {
+	fix := "<Debug> "
 	if openDebug {
-		fmt.Printf(f+"\n\n", args...)
+		fmt.Printf(fix+f+"\n\n", args...)
 	}
 }
 
 func Error(f string, args ...interface{}) {
-	fmt.Printf(f+"\n\n", args...)
+	fix := "<Error> "
+	fmt.Printf(fix+f+"\n\n", args...)
+}
+
+func Test(f string, args ...interface{}) {
+	fix := "<Test> "
+	fmt.Printf(fix+f+"\n\n", args...)
 }

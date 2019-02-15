@@ -90,20 +90,25 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 				args:   CompileArgs(x.Args, r),
 				//TODO t
 			}
-			return Invock(e, r)
+			ret = Invock(e, r)
 		default:
 			Error("there is should not happd")
 		}
 
 	case *ast.Ident:
-		ret = r.GetValue(x.Name)
+		noret = true
+		if _, ok := baseType[x.Name]; ok {
+			ret = x.Name
+		} else {
+			ret = r.GetValue(x.Name)
+		}
 	case *ast.IndexExpr:
 		l := CompileExpr(x.X, r)
 		switch l := l.(type) {
 		case map[interface{}]interface{}:
-			return l[CompileExpr(x.Index, r)]
+			ret = l[CompileExpr(x.Index, r)]
 		case []interface{}:
-			return l[cast.ToInt(CompileExpr(x.Index, r))]
+			ret = l[cast.ToInt(CompileExpr(x.Index, r))]
 		default:
 			Error("o it dont  ha %#v", l)
 		}
@@ -114,13 +119,21 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		//TODO
 		Error("there is should happend_9 %#v \n", x)
 	case *ast.ParenExpr:
-		//TODO
-		Error("there is should happend_10 %#v \n", x)
+		ret = CompileExpr(x.X, r)
 	case *ast.SelectorExpr:
-		return CompileSelectorExpr(x, r)
+		ret = CompileSelectorExpr(x, r)
 	case *ast.StarExpr:
 		//TODO
-		Error("there is should happend_12 %#v \n", x)
+		rret := r.GetValue(x.X.(*ast.Ident).Name)
+		switch rret := rret.(type) {
+		case *int:
+			ret = *rret
+		case *interface{}:
+			ret = *rret
+		default:
+			Error("but int happend_12 %#v , r = %#v ,rret = %#v \n", x.X, rret)
+		}
+
 	case *ast.StructType:
 		Error("there is should happend_13 %#v \n", x)
 	case *ast.TypeAssertExpr:
@@ -131,7 +144,6 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		Error("there is should happend_15 %#v \n", x)
 	case nil:
 		noret = true
-		return nil
 	default:
 		//TODO
 		Error("there is should happend_16 %#v \n", x)
