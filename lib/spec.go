@@ -37,7 +37,16 @@ func CompileImportSpec(spe *ast.ImportSpec, r *RunNode) {
 	//Debug(" =======>> %s\n", spe.Path.Value)
 	//TODO can't find
 	Debug("import what name : %#v, value :%s", spe.Name, spe.Path.Value)
-	path := pluginLib + strings.Replace(spe.Path.Value, "\"", "", 2) + ".so"
+	pluginName := strings.Replace(strings.Replace(spe.Path.Value, "\"", "", 2), "/", "@@@@@@", 20) + ".so"
+	path := ""
+	if isExist(defaultPluginLib + "/" + pluginName) {
+		path = defaultPluginLib + "/" + pluginName
+	} else {
+		path = installPath + "/" + pluginName
+		if !isExist(installPath + "/" + pluginName) {
+			autoImport(strings.Replace(spe.Path.Value, "\"", "", 2))
+		}
+	}
 	gdll, err := plugin.Open(path)
 	Debug("gddl = %#v,err = %#v", gdll, err)
 	if err != nil {
@@ -46,5 +55,7 @@ func CompileImportSpec(spe *ast.ImportSpec, r *RunNode) {
 	if r.ImportMap == nil {
 		r.ImportMap = make(map[string]plugin.Symbol, 0)
 	}
-	r.ImportMap[strings.Replace(spe.Path.Value, "\"", "", 2)] = gdll
+	arr := strings.Split(strings.Replace(spe.Path.Value, "\"", "", 2), "/")
+
+	r.ImportMap[arr[len(arr)-1]] = gdll
 }

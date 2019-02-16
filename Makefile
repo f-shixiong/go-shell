@@ -47,9 +47,13 @@ dev9:
 	@echo "> 支持  return     <"
 	@go run main.go test/test9
 dev10:
-	@echo "====test leve 10===="
+	@echo "====test leve 10.0===="
 	@echo "> 支持import       <"
 	@go run main.go test/test10
+dev10.1:
+	@echo "====test leve 10.1===="
+	@echo "> 支持import缓存   <"
+	@go run main.go test/test10.1
 dev11:
 	@echo "====test leve 11===="
 	@echo "> 支持shell       <"
