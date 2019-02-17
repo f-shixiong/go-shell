@@ -8,7 +8,7 @@ package ast
 
 import (
 	"fmt"
-	"go/token"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 	"io"
 	"os"
 	"reflect"

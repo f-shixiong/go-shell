@@ -6,7 +6,7 @@ import (
 	"github.com/f-shixiong/go-shell/lib"
 	"github.com/f-shixiong/go-shell/lib/go/ast"
 	"github.com/f-shixiong/go-shell/lib/go/parser"
-	"go/token"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 	"io/ioutil"
 	"os"
 	"strings"

@@ -8,8 +8,8 @@ package ast
 
 import (
 	"fmt"
-	"go/scanner"
-	"go/token"
+	"github.com/f-shixiong/go-shell/lib/go/scanner"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 	"strconv"
 )
 

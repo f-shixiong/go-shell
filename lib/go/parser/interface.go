@@ -11,7 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/f-shixiong/go-shell/lib/go/ast"
-	"go/token"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 	"io"
 	"io/ioutil"
 	"os"
@@ -117,6 +117,12 @@ func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode)
 
 	// parse source
 	p.init(fset, filename, text, mode)
+	i := 0
+	for i < 20 {
+		fmt.Printf("tok -> %#v\n ", p.tok)
+		p.next()
+		i++
+	}
 	fmt.Printf("p -> %#v\n\n", p)
 
 	f = p.parseFile()

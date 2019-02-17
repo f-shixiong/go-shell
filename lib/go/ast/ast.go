@@ -8,7 +8,7 @@
 package ast
 
 import (
-	"go/token"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 	"strings"
 	"unicode"
 	"unicode/utf8"

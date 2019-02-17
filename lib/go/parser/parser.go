@@ -19,8 +19,8 @@ package parser
 import (
 	"fmt"
 	"github.com/f-shixiong/go-shell/lib/go/ast"
-	"go/scanner"
-	"go/token"
+	"github.com/f-shixiong/go-shell/lib/go/scanner"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 	"strconv"
 	"strings"
 	"unicode"
@@ -2467,6 +2467,7 @@ func (p *parser) parseFile() *ast.File {
 	// Go spec: The package clause is not a declaration;
 	// the package name does not appear in any scope.
 	ident := p.parseIdent()
+	fmt.Printf("ident -> %#v\n\n", ident)
 	if ident.Name == "_" && p.mode&DeclarationErrors != 0 {
 		p.error(p.pos, "invalid package name _")
 	}
@@ -2475,29 +2476,34 @@ func (p *parser) parseFile() *ast.File {
 	// Don't bother parsing the rest if we had errors parsing the package clause.
 	// Likely not a Go source file at all.
 	if p.errors.Len() != 0 {
+		fmt.Println("======err======")
 		return nil
 	}
-
+	fmt.Println("======err no 000======")
 	p.openScope()
 	p.pkgScope = p.topScope
 	var decls []ast.Decl
 	if p.mode&PackageClauseOnly == 0 {
 		// import decls
+		fmt.Println(111)
 		for p.tok == token.IMPORT {
+			fmt.Println(333)
 			decls = append(decls, p.parseGenDecl(token.IMPORT, p.parseImportSpec))
 		}
 
 		if p.mode&ImportsOnly == 0 {
+			fmt.Println(222)
 			// rest of package body
 			for p.tok != token.EOF {
 				decls = append(decls, p.parseDecl(syncDecl))
 			}
 		}
 	}
+	fmt.Printf("decl -> %#v\n\n", decls[0])
 	p.closeScope()
 	assert(p.topScope == nil, "unbalanced scopes")
 	assert(p.labelScope == nil, "unbalanced label scopes")
-
+	fmt.Println("======err no 111======")
 	// resolve global identifiers within the same file
 	i := 0
 	for _, ident := range p.unresolved {
@@ -2509,7 +2515,7 @@ func (p *parser) parseFile() *ast.File {
 			i++
 		}
 	}
-
+	fmt.Println("======err no 222======")
 	return &ast.File{
 		Doc:        doc,
 		Package:    pos,

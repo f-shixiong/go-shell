@@ -3,7 +3,7 @@ package lib
 import (
 	"fmt"
 	"github.com/f-shixiong/go-shell/lib/go/ast"
-	"go/token"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 )
 
 func CompileArgs(args []ast.Expr, r *RunNode) (retArgs []interface{}) {

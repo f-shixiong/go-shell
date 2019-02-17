@@ -2,8 +2,8 @@ package lib
 
 import (
 	"github.com/f-shixiong/go-shell/lib/go/ast"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 	"github.com/spf13/cast"
-	"go/token"
 )
 
 type funcArg struct {

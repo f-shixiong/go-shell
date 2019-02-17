@@ -7,7 +7,7 @@ package ast
 import (
 	"bytes"
 	"fmt"
-	"go/token"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 	"sort"
 )
 
