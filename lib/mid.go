@@ -2,7 +2,7 @@ package lib
 
 import (
 	"fmt"
-	"go/ast"
+	"github.com/f-shixiong/go-shell/lib/go/ast"
 	"go/token"
 )
 

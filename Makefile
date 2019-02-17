@@ -1,4 +1,4 @@
-default:dev1.0 dev2.0 dev3.0 dev4.0 dev5.0 dev6.0 dev6.1 dev6.2 dev7 dev8 dev9 dev10
+default:dev1.0 dev2.0 dev3.0 dev4.0 dev5.0 dev6.0 dev6.1 dev6.2 dev7 dev8 dev9 dev10.0 dev10.1
 dev1.0:
 	@echo "====test leve 1.0===="
 	@echo "> 支持基本+-*/ <"
@@ -46,7 +46,7 @@ dev9:
 	@echo "====test leve 9===="
 	@echo "> 支持  return     <"
 	@go run main.go test/test9
-dev10:
+dev10.0:
 	@echo "====test leve 10.0===="
 	@echo "> 支持import       <"
 	@go run main.go test/test10
@@ -54,10 +54,10 @@ dev10.1:
 	@echo "====test leve 10.1===="
 	@echo "> 支持import缓存   <"
 	@go run main.go test/test10.1
-dev11:
-	@echo "====test leve 11===="
+dev11.0:
+	@echo "====test leve 11.0===="
 	@echo "> 支持shell       <"
-	@go run main.go test/test11
+	@go run main.go test/test11.0
 dev12:
 	@echo "====test leve 12===="
 	@echo "> 支持全部二进制  <"
@@ -68,3 +68,6 @@ dev13:
 	@go run main.go test/test13
 build:
 	go build
+n:dev11.0
+jock:
+	find .|grep -v git|grep -v .so|grep -v code-cache|grep -v ast|grep -v parse|grep -v token|xargs cat|wc -l

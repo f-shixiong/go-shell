@@ -1,8 +1,8 @@
 package lib
 
 import (
+	"github.com/f-shixiong/go-shell/lib/go/ast"
 	"github.com/spf13/cast"
-	"go/ast"
 	"go/token"
 )
 

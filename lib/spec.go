@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"go/ast"
+	"github.com/f-shixiong/go-shell/lib/go/ast"
 	"plugin"
 	"strings"
 )
