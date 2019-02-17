@@ -10,18 +10,27 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 	if r.VarMap == nil {
 		r.VarMap = make(map[string]interface{}, 0)
 	}
+	var notSlice bool
+	if len(stmt.Lhs) > 1 {
+		notSlice = true
+	}
 	for i, k := range stmt.Lhs {
+		j := -1
+		if notSlice {
+			j = i
+		}
 		right := stmt.Rhs[0]
-		if len(stmt.Rhs) >= i {
+		if len(stmt.Rhs) > i {
 			right = stmt.Rhs[i]
 		}
 		switch k := k.(type) {
 		case *ast.Ident:
+			rv := CompileExpr(right, r)
 			if len(stmt.Rhs) >= i {
 				//*ast.BasicLit
-				r.VarMap[k.Name] = CompileExpr(right, r)
+				r.VarMap[k.Name] = getResult(j, rv)
 			} else {
-				r.VarMap[k.Name] = CompileExpr(right, r)
+				r.VarMap[k.Name] = getResult(j, rv)
 
 			}
 		case *ast.IndexExpr:
@@ -40,7 +49,7 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 		case *ast.StarExpr:
 			Debug("test--> key = %#v,value = %#v", k.X, CompileExpr(right, r))
 			realLeft := CompileExpr(right, r)
-			r.VarMap[k.X.(*ast.Ident).Name] = &realLeft
+			r.VarMap[k.X.(*ast.Ident).Name] = getResult(j, &realLeft)
 
 		case *ast.SelectorExpr:
 			Debug("x = %#v,sel = %#v,vars= %#v", k.X, k.Sel, r.VarMap)

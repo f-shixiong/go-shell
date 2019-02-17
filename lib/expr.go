@@ -168,8 +168,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		//TODO
 		Error("there is should happend_14 %#v \n", x)
 	case *ast.UnaryExpr:
-		//TODO
-		Error("there is should happend_15 %#v \n", x)
+		ret = CompileUnaryExpr(x, r)
 	case nil:
 		noret = true
 	case *ast.ShellStmt:

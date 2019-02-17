@@ -19,10 +19,14 @@ cd go-shell && go build
 #### 2.15-支持import
 #### 2.15-支持struct-func
 #### 2.16-支持动态import
+#### 2.17-支持shell
+#### 2.17-支持return 多个值
 
 ### TODO
-#### 支持shell
+#### 支持shell || &&
 #### 支持全部二进制action
 #### 支持全部数据类型
 #### 支持import intenal package
-#### 支持return 多个值
+
+### chat
+#### struct

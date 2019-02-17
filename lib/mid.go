@@ -93,3 +93,18 @@ func CompileSelectorExpr(x *ast.SelectorExpr, r *RunNode) (ret interface{}) {
 	}
 	return
 }
+
+func CompileUnaryExpr(x *ast.UnaryExpr, r *RunNode) (ret interface{}) {
+	Debug("there x = %#v x.Op = %#v \n", x, x.Op.String())
+
+	switch x.Op {
+	case token.AND:
+		r0 := CompileExpr(x.X, r)
+		ret = &r0
+
+	default:
+		Error("how it ha %#v", x)
+	}
+
+	return
+}

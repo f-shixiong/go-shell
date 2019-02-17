@@ -1,0 +1,13 @@
+println(">>define ss() with 2 return")
+func ss() (*int,*int) {
+	println(">> definde a.b int")
+	var a = 1
+	var b = 2
+	println(">> return &a &b")
+	return &a,&b
+}
+println(">>define a,b=ss(),and print")
+a,b := ss()
+println(*a)
+println(*b)
+
