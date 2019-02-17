@@ -458,6 +458,28 @@ func (s *Scanner) scanRune() string {
 	return string(s.src[offs:s.offset])
 }
 
+func (s *Scanner) scanShell() string {
+	// '"' opening already consumed
+	offs := s.offset - 1
+
+	for {
+		ch := s.ch
+		if ch == '\n' || ch < 0 {
+			s.error(offs, "string literal not terminated")
+			break
+		}
+		s.next()
+		if ch == '@' {
+			break
+		}
+		if ch == '\\' {
+			s.scanEscape('"')
+		}
+	}
+
+	return string(s.src[offs:s.offset])
+}
+
 func (s *Scanner) scanString() string {
 	// '"' opening already consumed
 	offs := s.offset - 1
@@ -652,6 +674,10 @@ scanAgain:
 			insertSemi = true
 			tok = token.STRING
 			lit = s.scanRawString()
+		case '@':
+			insertSemi = true
+			tok = token.SHELL
+			lit = s.scanShell()
 		case ':':
 			tok = s.switch2(token.COLON, token.DEFINE)
 		case '.':

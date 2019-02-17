@@ -3,8 +3,11 @@ package lib
 import (
 	"fmt"
 	"github.com/f-shixiong/go-shell/lib/go/ast"
+	"os/exec"
 	"plugin"
 	"reflect"
+	"regexp"
+	"strings"
 )
 
 func InvockConst(e expr, r *RunNode) (ret interface{}) {
@@ -106,4 +109,25 @@ func InvockCos(f *ast.FuncDecl, rc *RunNode, e expr) (ret []interface{}) {
 	}
 	ret = CompileFuncDecl(f, rc)
 	return
+}
+
+func InvockShell(stmt *ast.ShellStmt, r *RunNode) string {
+	reg, _ := regexp.Compile("\\s{2,}")
+	rcmd := stmt.Cmd[1 : len(stmt.Cmd)-1]
+	str := string(reg.ReplaceAll([]byte(rcmd), []byte("\\s")))
+	arr := strings.Split(str, " ")
+	Debug("srt -> %s, arr %+v", str, arr)
+	var brr []string
+	for i, v := range arr {
+		if i != 0 {
+			brr = append(brr, v)
+		}
+	}
+	cmd := exec.Command(arr[0], brr...)
+
+	ret, err := cmd.Output()
+	if err != nil {
+		Error("err -> %v", err)
+	}
+	return string(ret)
 }

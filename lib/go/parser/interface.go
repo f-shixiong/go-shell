@@ -9,7 +9,6 @@ package parser
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"github.com/f-shixiong/go-shell/lib/go/ast"
 	"github.com/f-shixiong/go-shell/lib/go/token"
 	"io"
@@ -91,7 +90,6 @@ func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("text -> \n%s\n\n", string(text))
 	var p parser
 	defer func() {
 		if e := recover(); e != nil {
@@ -117,13 +115,6 @@ func ParseFile(fset *token.FileSet, filename string, src interface{}, mode Mode)
 
 	// parse source
 	p.init(fset, filename, text, mode)
-	i := 0
-	for i < 20 {
-		fmt.Printf("tok -> %#v\n ", p.tok)
-		p.next()
-		i++
-	}
-	fmt.Printf("p -> %#v\n\n", p)
 
 	f = p.parseFile()
 	return

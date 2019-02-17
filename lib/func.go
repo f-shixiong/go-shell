@@ -67,7 +67,9 @@ func CompileFuncDecl(d *ast.FuncDecl, r *RunNode) (ret []interface{}) {
 			for _, result := range stmt.Results {
 				ret = append(ret, CompileExpr(result, r))
 			}
-
+		case *ast.ShellStmt:
+			CompileShell(stmt, r)
+		case *ast.EmptyStmt:
 		default:
 			Error("undefind value -> %#v", stmt)
 		}

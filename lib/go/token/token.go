@@ -28,6 +28,7 @@ const (
 	IMAG   // 123.45i
 	CHAR   // 'a'
 	STRING // "abc"
+	SHELL  // @ls@
 	literal_end
 
 	operator_beg
@@ -135,6 +136,7 @@ var tokens = [...]string{
 	IMAG:   "IMAG",
 	CHAR:   "CHAR",
 	STRING: "STRING",
+	SHELL:  "SHELL",
 
 	ADD: "+",
 	SUB: "-",

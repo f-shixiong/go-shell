@@ -605,6 +605,7 @@ func (p *parser) parseLhsList() []ast.Expr {
 func (p *parser) parseRhsList() []ast.Expr {
 	old := p.inRhs
 	p.inRhs = true
+
 	list := p.parseExprList(false)
 	p.inRhs = old
 	return list
@@ -1131,6 +1132,12 @@ func (p *parser) parseOperand(lhs bool) ast.Expr {
 	}
 
 	switch p.tok {
+	case token.SHELL:
+		x := &ast.ShellStmt{
+			Cmd: p.lit,
+		}
+		p.next()
+		return x
 	case token.IDENT:
 		x := p.parseIdent()
 		if !lhs {
@@ -1383,6 +1390,7 @@ func (p *parser) checkExpr(x ast.Expr) ast.Expr {
 	case *ast.StarExpr:
 	case *ast.UnaryExpr:
 	case *ast.BinaryExpr:
+	case *ast.ShellStmt:
 	default:
 		// all other nodes are not proper expressions
 		p.errorExpected(x.Pos(), "expression")
@@ -1595,7 +1603,6 @@ func (p *parser) parseBinaryExpr(lhs bool, prec1 int) ast.Expr {
 	if p.trace {
 		defer un(trace(p, "BinaryExpr"))
 	}
-
 	x := p.parseUnaryExpr(lhs)
 	for {
 		op, oprec := p.tokPrec()
@@ -1660,7 +1667,6 @@ func (p *parser) parseSimpleStmt(mode int) (ast.Stmt, bool) {
 	}
 
 	x := p.parseLhsList()
-
 	switch p.tok {
 	case
 		token.DEFINE, token.ASSIGN, token.ADD_ASSIGN,
@@ -2173,6 +2179,11 @@ func (p *parser) parseStmt() (s ast.Stmt) {
 		if _, isLabeledStmt := s.(*ast.LabeledStmt); !isLabeledStmt {
 			p.expectSemi()
 		}
+	case token.SHELL:
+		s = &ast.ShellStmt{
+			Cmd: p.lit,
+		}
+		p.next()
 	case token.GO:
 		s = p.parseGoStmt()
 	case token.DEFER:
@@ -2461,13 +2472,10 @@ func (p *parser) parseFile() *ast.File {
 
 	// package clause
 	doc := p.leadComment
-	fmt.Printf("doc -> %#v\n\n", doc)
 	pos := p.expect(token.PACKAGE)
-	fmt.Printf("pos -> %#v\n\n", pos)
 	// Go spec: The package clause is not a declaration;
 	// the package name does not appear in any scope.
 	ident := p.parseIdent()
-	fmt.Printf("ident -> %#v\n\n", ident)
 	if ident.Name == "_" && p.mode&DeclarationErrors != 0 {
 		p.error(p.pos, "invalid package name _")
 	}
@@ -2476,34 +2484,27 @@ func (p *parser) parseFile() *ast.File {
 	// Don't bother parsing the rest if we had errors parsing the package clause.
 	// Likely not a Go source file at all.
 	if p.errors.Len() != 0 {
-		fmt.Println("======err======")
 		return nil
 	}
-	fmt.Println("======err no 000======")
 	p.openScope()
 	p.pkgScope = p.topScope
 	var decls []ast.Decl
 	if p.mode&PackageClauseOnly == 0 {
 		// import decls
-		fmt.Println(111)
 		for p.tok == token.IMPORT {
-			fmt.Println(333)
 			decls = append(decls, p.parseGenDecl(token.IMPORT, p.parseImportSpec))
 		}
 
 		if p.mode&ImportsOnly == 0 {
-			fmt.Println(222)
 			// rest of package body
 			for p.tok != token.EOF {
 				decls = append(decls, p.parseDecl(syncDecl))
 			}
 		}
 	}
-	fmt.Printf("decl -> %#v\n\n", decls[0])
 	p.closeScope()
 	assert(p.topScope == nil, "unbalanced scopes")
 	assert(p.labelScope == nil, "unbalanced label scopes")
-	fmt.Println("======err no 111======")
 	// resolve global identifiers within the same file
 	i := 0
 	for _, ident := range p.unresolved {
@@ -2515,7 +2516,6 @@ func (p *parser) parseFile() *ast.File {
 			i++
 		}
 	}
-	fmt.Println("======err no 222======")
 	return &ast.File{
 		Doc:        doc,
 		Package:    pos,

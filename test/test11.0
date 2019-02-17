@@ -1,1 +1,5 @@
-a := <ls>
+println(">> exec ls /home/shizuo")
+@ls /home/shizuo@
+println(">> a = @ls /home@ and print a")
+a := @ls /home/@
+println(a)

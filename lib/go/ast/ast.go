@@ -560,6 +560,10 @@ type (
 		Decl Decl // *GenDecl with CONST, TYPE, or VAR token
 	}
 
+	ShellStmt struct {
+		Cmd string
+	}
+
 	// An EmptyStmt node represents an empty statement.
 	// The "position" of the empty statement is the position
 	// of the immediately following (explicit or implicit) semicolon.
@@ -712,6 +716,7 @@ type (
 
 func (s *BadStmt) Pos() token.Pos        { return s.From }
 func (s *DeclStmt) Pos() token.Pos       { return s.Decl.Pos() }
+func (s *ShellStmt) Pos() token.Pos      { return 0 } //TODO
 func (s *EmptyStmt) Pos() token.Pos      { return s.Semicolon }
 func (s *LabeledStmt) Pos() token.Pos    { return s.Label.Pos() }
 func (s *ExprStmt) Pos() token.Pos       { return s.X.Pos() }
@@ -732,8 +737,9 @@ func (s *SelectStmt) Pos() token.Pos     { return s.Select }
 func (s *ForStmt) Pos() token.Pos        { return s.For }
 func (s *RangeStmt) Pos() token.Pos      { return s.For }
 
-func (s *BadStmt) End() token.Pos  { return s.To }
-func (s *DeclStmt) End() token.Pos { return s.Decl.End() }
+func (s *BadStmt) End() token.Pos   { return s.To }
+func (s *DeclStmt) End() token.Pos  { return s.Decl.End() }
+func (s *ShellStmt) End() token.Pos { return 0 } //TODO
 func (s *EmptyStmt) End() token.Pos {
 	if s.Implicit {
 		return s.Semicolon
@@ -791,6 +797,8 @@ func (s *RangeStmt) End() token.Pos  { return s.Body.End() }
 //
 func (*BadStmt) stmtNode()        {}
 func (*DeclStmt) stmtNode()       {}
+func (*ShellStmt) stmtNode()      {}
+func (*ShellStmt) exprNode()      {}
 func (*EmptyStmt) stmtNode()      {}
 func (*LabeledStmt) stmtNode()    {}
 func (*ExprStmt) stmtNode()       {}

@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"fmt"
 	"github.com/f-shixiong/go-shell/lib/go/ast"
 	"reflect"
 )
@@ -99,5 +100,12 @@ func CompileRangeStmt(stmt *ast.RangeStmt, r *RunNode) {
 	default:
 		Error("o dont")
 
+	}
+}
+
+func CompileShell(stmt *ast.ShellStmt, r *RunNode) {
+	ret := InvockShell(stmt, r)
+	if ret != "" {
+		fmt.Println(ret)
 	}
 }

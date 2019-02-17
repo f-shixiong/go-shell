@@ -46,6 +46,7 @@ func main() {
 			status = -1
 			file, e2 := parser.ParseFile(fset, "", fmt.Sprintf(CONTEXT_MAIN, let), 0)
 			if e2 != nil {
+				err = e2
 				continue
 			}
 			lib.Debug(let)

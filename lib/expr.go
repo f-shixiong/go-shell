@@ -172,6 +172,8 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		Error("there is should happend_15 %#v \n", x)
 	case nil:
 		noret = true
+	case *ast.ShellStmt:
+		ret = InvockShell(x, r)
 	default:
 		//TODO
 		Error("there is should happend_16 %#v \n", x)
