@@ -85,3 +85,7 @@ if:
 	@echo "====test if     ===="
 	@echo "> 支持 if          <"
 	@go run main.go test/test_stmt_if
+const:
+	@echo "====test const  ===="
+	@echo "> 支持 const       <"
+	@go run main.go test/const

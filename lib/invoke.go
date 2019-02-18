@@ -25,7 +25,7 @@ func InvockConst(e expr, r *RunNode) (ret interface{}) {
 		case "int":
 			ret = new(int)
 		default:
-			Error("unsupport type %+v ", e.args[0])
+			Error(" type = %+v ", e.args[0])
 
 		}
 	default:
@@ -39,7 +39,7 @@ func InvockConst(e expr, r *RunNode) (ret interface{}) {
 			}
 			return
 		}
-		Error("how it happend, method = %s , entity =%#v", e.method, e)
+		Error(" method = %s , entity =%#v", e.method, e)
 	}
 	return
 }
@@ -52,7 +52,7 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 	case *plugin.Plugin:
 		method, err := l.Lookup(e.method)
 		if err != nil {
-			Error("not found method %+v", e.method)
+			Error("method = %+v", e.method)
 		}
 		ins := make([]reflect.Value, 0)
 		for _, i := range e.args {
@@ -60,7 +60,7 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 		}
 		rm := reflect.ValueOf(method)
 		if !rm.IsValid() {
-			Error("method fail, method =  %#v", method)
+			Error("method =  %#v", method)
 		}
 		rret := rm.Call(ins)
 		rets := make([]interface{}, 0)
@@ -71,7 +71,7 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 	case Struct:
 		f, ok := l.funcMap[e.method]
 		if !ok {
-			Error("method not found %v , l = %#v", e.method, l)
+			Error("method = %v , l = %#v", e.method, l)
 			return
 		}
 		rc, ok := l.funcRMap[e.method]
@@ -85,7 +85,7 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 		Debug("rc.VarMap = %#v", rc.VarMap)
 		ret = InvockCos(f, rc, e)
 	default:
-		Error("unsupport left %#v", l)
+		Error("left = %#v", l)
 	}
 
 	return
@@ -97,7 +97,7 @@ func InvockCos(f *ast.FuncDecl, rc *RunNode, e expr) (ret []interface{}) {
 		for _, field := range f.Type.Params.List {
 			for _, n := range field.Names {
 				if j >= len(e.args) {
-					Error("o this is crazzy")
+					Error("len error")
 				}
 				rc.VarMap[n.Name] = e.args[j]
 				j++
@@ -127,7 +127,7 @@ func InvockShell(stmt *ast.ShellStmt, r *RunNode) string {
 
 	ret, err := cmd.Output()
 	if err != nil {
-		Error("err -> %v", err)
+		Error("err = %v", err)
 	}
 	return string(ret)
 }

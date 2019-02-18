@@ -18,7 +18,7 @@ func BAdd(l interface{}, r interface{}) interface{} {
 		return l + cast.ToString(r)
 
 	default:
-		Error("anyway it happend,type= %#v \n", l)
+		Error("type= %#v \n", l)
 	}
 	return nil
 }
@@ -34,7 +34,7 @@ func BSub(l interface{}, r interface{}) interface{} {
 	case float64:
 		return l - cast.ToFloat64(r)
 	default:
-		Error("anyway it happend,type= %#v \n", l)
+		Error("type= %#v \n", l)
 	}
 	return nil
 }
@@ -50,7 +50,7 @@ func BMul(l interface{}, r interface{}) interface{} {
 	case float64:
 		return l * cast.ToFloat64(r)
 	default:
-		Error("anyway it happend,type= %#v \n", l)
+		Error("type= %#v \n", l)
 	}
 	return nil
 }
@@ -66,7 +66,7 @@ func BQuo(l interface{}, r interface{}) interface{} {
 	case float64:
 		return l / cast.ToFloat64(r)
 	default:
-		Error("anyway it happend,type= %#v \n", l)
+		Error("type= %#v \n", l)
 	}
 	return nil
 }
@@ -80,7 +80,7 @@ func BLss(l interface{}, r interface{}) bool {
 	case float32:
 		return l < cast.ToFloat32(r)
 	default:
-		Test("TODO ? when do? %#v", l)
+		Test("type %#v", l)
 	}
 	return false
 }

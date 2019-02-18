@@ -26,7 +26,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		if ret != nil || noret {
 			Debug("compile_expr -> %#v , ret -> %+v ", x, ret)
 		} else {
-			Error("compile_expr -> %#v , ret -> %+v ", x, ret)
+			Error("compile_expr = %#v , ret = %+v ", x, ret)
 		}
 	}()
 	switch x := x.(type) {
@@ -39,12 +39,12 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		case token.STRING:
 			ret = x.Value
 		default:
-			Error("there is should happend_1 %#v \n", x)
+			Error("type = %#v \n", x)
 		}
 	case *ast.CompositeLit:
 		tp := r.GetType(x.Type.(*ast.Ident).Name)
 		if tp == nil {
-			Error("con't find type %s", x.Type.(*ast.Ident).Name)
+			Error("type = %s", x.Type.(*ast.Ident).Name)
 		}
 		switch tp := tp.(type) {
 		case *ast.StructType:
@@ -56,7 +56,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 				case *ast.KeyValueExpr:
 					stu.vals[el.Key.(*ast.Ident).Name] = CompileExpr(el.Value, r)
 				default:
-					Error("tttttttt ")
+					Error(" type = %#v", el)
 				}
 			}
 			return stu
@@ -66,32 +66,32 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 				case *ast.KeyValueExpr:
 					tp.vals[el.Key.(*ast.Ident).Name] = CompileExpr(el.Value, r)
 				default:
-					Error("tttttttt ")
+					Error(" type = %#v", el)
 				}
 			}
 			return tp
 		default:
-			Error("o no  unsupport %#v", tp)
+			Error("tp =  %#v", tp)
 		}
 	case *ast.FuncLit:
 		//TODO
-		Error("there is should happend_3 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	case *ast.ArrayType:
 		//TODO
 		return make([]interface{}, 0)
 	case *ast.ChanType:
-		Error("there is should happend_4.1 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	case *ast.Ellipsis:
-		Error("there is should happend_4.2 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	case *ast.FuncType:
-		Error("there is should happend_4.3 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	case *ast.InterfaceType:
-		Error("there is should happend_4.4 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	case *ast.MapType:
 		return make(map[interface{}]interface{}, 0)
 	case *ast.BadExpr:
 		//TODO
-		Error("there is should happend_5 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	case *ast.BinaryExpr:
 		ret = CompileBinary(x, r)
 	case *ast.CallExpr:
@@ -114,7 +114,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 			}
 			ret = Invock(e, r)
 		default:
-			Error("there is should not happd %#v", f)
+			Error("todo = %#v", f)
 		}
 
 	case *ast.Ident:
@@ -132,14 +132,14 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		case []interface{}:
 			ret = l[cast.ToInt(CompileExpr(x.Index, r))]
 		default:
-			Error("o it dont  ha %#v", l)
+			Error(" todo = %#v", l)
 		}
 	case *ast.SliceExpr:
 		//TODO
-		Error("there is should happend_8 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	case *ast.KeyValueExpr:
 		//TODO
-		Error("there is should happend_9 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	case *ast.ParenExpr:
 		ret = CompileExpr(x.X, r)
 	case *ast.SelectorExpr:
@@ -153,7 +153,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		case *interface{}:
 			ret = *rret
 		default:
-			Error("but int happend_12 %#v , r = %#v ,rret = %#v \n", x.X, rret)
+			Error("todo = %#v , r = %#v ,rret = %#v", x, x.X, rret)
 		}
 
 	case *ast.StructType:
@@ -166,7 +166,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 
 	case *ast.TypeAssertExpr:
 		//TODO
-		Error("there is should happend_14 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	case *ast.UnaryExpr:
 		ret = CompileUnaryExpr(x, r)
 	case nil:
@@ -175,7 +175,7 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		ret = InvockShell(x, r)
 	default:
 		//TODO
-		Error("there is should happend_16 %#v \n", x)
+		Error(" todo = %#v \n", x)
 	}
 	return
 }

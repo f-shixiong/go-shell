@@ -62,7 +62,7 @@ func main() {
 		}
 	}
 	if status != 0 {
-		fmt.Printf("paser not work lt = \n%s,err=%+v \n", let, err)
+		fmt.Printf("compile fail > \n%s,err=%+v \n", let, err)
 		os.Exit(0)
 	}
 	for _, f := range files {
@@ -83,7 +83,7 @@ func main() {
 				lib.LoadFunc(d, runNode)
 			}
 		default:
-			lib.Error("no----0v0----no")
+			lib.Error("d = %#v", d)
 		}
 	}
 

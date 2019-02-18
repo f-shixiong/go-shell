@@ -1,6 +1,6 @@
 include test/Makefile
 
-d:demo dev2 dev3 dev4 dev5 dev6 dev7 dev8 dev9 dev10 dev10.1 dev11 for switch if
+all:demo dev2 dev3 dev4 dev5 dev6 dev7 dev8 dev9 dev10 dev10.1 dev11 for switch if const
 build:
 	go build
 n:switch

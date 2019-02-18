@@ -1,0 +1,6 @@
+import "fmt"
+println(">> define const a")
+const a = 1
+fmt.Println("a->",a)
+
+

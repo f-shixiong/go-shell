@@ -39,7 +39,7 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 			//TODO 1l
 			o := r.GetValue(k.X.(*ast.Ident).Name)
 			if o == nil {
-				Error("o no so sad ")
+				Error(" name = %#v", k.X.(*ast.Ident).Name)
 				return
 			}
 			mp := o.(map[interface{}]interface{})
@@ -59,12 +59,12 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 				Debug("k = %#v, v = %#v, r = %#v", k.Sel.Name, CompileExpr(right, r), right)
 				t.vals[k.Sel.Name] = CompileExpr(right, r)
 			default:
-				Error("should not %#v", t)
+				Error("t = %#v", t)
 			}
 			//Test("kk = %#v, vv = %#v", k.X.(*ast.Ident).Name, t)
 			r.VarMap[k.X.(*ast.Ident).Name] = t
 		default:
-			Error("o no , this is what %#v ", k)
+			Error("k = %#v ", k)
 		}
 	}
 }
@@ -74,7 +74,7 @@ func CompileDeclStmt(stmt *ast.DeclStmt, r *RunNode) {
 	case *ast.GenDecl:
 		CompileGenDecl(stmt.Decl.(*ast.GenDecl), r)
 	default:
-		Error("o no = %+v, type =%+v \n", stmt.Decl, reflect.TypeOf(stmt.Decl))
+		Error("item = %+v, type =%+v \n", stmt.Decl, reflect.TypeOf(stmt.Decl))
 	}
 }
 
@@ -88,7 +88,7 @@ func CompileGenDecl(d *ast.GenDecl, r *RunNode) {
 		case *ast.TypeSpec:
 			CompileTypeSpec(spe, r)
 		default:
-			Error("o no spe= %#v", spe)
+			Error(" spe = %#v", spe)
 		}
 	}
 }
@@ -107,7 +107,7 @@ func CompileRangeStmt(stmt *ast.RangeStmt, r *RunNode) {
 			CompileFuncDecl(f, rc)
 		}
 	default:
-		Error("o dont")
+		Error("xs = %#v", xs)
 
 	}
 }

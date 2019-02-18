@@ -80,19 +80,19 @@ func installPlugin(pName, cPath, iPath, vPath string) {
 	cc := exec.Command("cp", "-r", vPath, cPath+"/vendor")
 	err := cc.Run()
 	if err != nil {
-		Error("error %+v", err)
+		Error("error = %+v", err)
 	}
 	hc := exec.Command("go", "build", "-buildmode=plugin", "-o", pName)
 	hc.Dir = cPath + "/"
 	err = hc.Run()
 	if err != nil {
-		Error("error %+v", err)
+		Error("error = %+v", err)
 	}
 	mc := exec.Command("mv", pName, iPath+"/"+pName)
 	mc.Dir = cPath + "/"
 	err = mc.Run()
 	if err != nil {
-		Error("error %+v", err)
+		Error("error = %+v", err)
 	}
 }
 func createFile(filePath string) error {

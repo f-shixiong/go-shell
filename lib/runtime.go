@@ -58,7 +58,7 @@ func (r *RunNode) SetValue(k string, v interface{}) {
 	} else if r.Father != nil {
 		r.Father.SetValue(k, v)
 	} else {
-		Error("what k =%v,v=%v", k, v)
+		Error("k = %v,v = %v", k, v)
 	}
 
 }
