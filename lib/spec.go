@@ -10,7 +10,6 @@ var pluginLib = "/home/shizuo/.go-shell/plugin-lib/"
 
 func CompileVarSpec(stmt *ast.ValueSpec, r *RunNode) {
 	for i, n := range stmt.Names {
-		Debug("==> name : %+v, value : %#v \n", n.Name, stmt.Values)
 		v := Var{}
 		v.k = n.Name
 		if len(stmt.Values) > i {
@@ -22,6 +21,7 @@ func CompileVarSpec(stmt *ast.ValueSpec, r *RunNode) {
 		if r.VarMap == nil {
 			r.VarMap = make(map[string]interface{}, 0)
 		}
+		Debug("==> value : %#v \n", v.v)
 		r.VarMap[n.Name] = CompileExpr(v.v, r)
 	}
 }

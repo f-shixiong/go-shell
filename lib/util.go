@@ -5,7 +5,10 @@ import (
 )
 
 func getResult(index int, ret interface{}) interface{} {
-	Debug("index = %#v,ret = %#v,reflectType =%v", index, ret, reflect.TypeOf(ret).Kind())
+	Debug("index = %#v,ret = %#v", index, ret)
+	if ret == nil {
+		return nil
+	}
 	if index == -1 || reflect.TypeOf(ret).Kind() != reflect.Slice {
 		return ret
 	}

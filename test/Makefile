@@ -47,9 +47,11 @@ dev9:
 	@echo "====test leve 9===="
 	@echo "> 支持  return     <"
 	@go run main.go test/test9
+dev9.1:
 	@echo "====test leve 9.1===="
 	@echo "> 支持  return多个 <"
 	@go run main.go test/test9.1
+dev9.2:
 	@echo "====test leve 9.2===="
 	@echo ">支持return多个指针<"
 	@go run main.go test/test9.2
@@ -97,3 +99,7 @@ binary_assi:
 	@echo "====test += ======="
 	@echo "> 支持 +=          <"
 	@go run main.go test/binary_assi
+basiclit:
+	@echo "====test basiclit=="
+	@echo "> 支持所有数据类型<"
+	@go run main.go test/basiclit

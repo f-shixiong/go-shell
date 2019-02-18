@@ -35,9 +35,16 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 		case token.INT:
 			ret = cast.ToInt(x.Value)
 		case token.FLOAT:
-			//TODO
+			ret = cast.ToFloat64(x.Value)
 		case token.STRING:
 			ret = x.Value
+		case token.CHAR:
+			if len(x.Value) == 0 {
+				Error("empty char %#v", x.Value)
+			} else {
+				return x.Value[0]
+			}
+
 		default:
 			Error("type = %#v \n", x)
 		}
@@ -113,17 +120,31 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 				left:   CompileExpr(f.X, r),
 			}
 			ret = Invock(e, r)
+		case *ast.ArrayType:
+			if elt, ok := f.Elt.(*ast.Ident); ok {
+				if elt.Name == "byte" {
+					return []byte(cast.ToString(CompileArgs(x.Args, r)[0]))
+				}
+			}
+			Error(" f = %#v, elt = %#v", f, f.Elt)
 		default:
 			Error("todo = %#v", f)
 		}
 
 	case *ast.Ident:
 		noret = true
-		if _, ok := baseType[x.Name]; ok {
-			ret = x.Name
-		} else {
-			ret = r.GetValue(x.Name)
+		_, ok := baseType[x.Name]
+		if ok {
+			return x.Name
 		}
+		if x.Name == "true" {
+			return true
+		}
+
+		if x.Name == "false" {
+			return false
+		}
+		ret = r.GetValue(x.Name)
 	case *ast.IndexExpr:
 		l := CompileExpr(x.X, r)
 		switch l := l.(type) {

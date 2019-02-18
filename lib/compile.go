@@ -28,6 +28,7 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 		case *ast.Ident:
 			rv := CompileExpr(right, r)
 			//r.VarMap[k.Name] = getResult(j, rv)
+			Debug("rv = %#v", rv)
 			AssignIdent(stmt.Tok, k.Name, r, getResult(j, rv))
 		case *ast.IndexExpr:
 			Debug("test--> %#v,%#v", k.X, k.Index)

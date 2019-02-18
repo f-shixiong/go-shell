@@ -3,6 +3,7 @@ package lib
 import (
 	"fmt"
 	"github.com/f-shixiong/go-shell/lib/go/ast"
+	"github.com/spf13/cast"
 	"os/exec"
 	"plugin"
 	"reflect"
@@ -12,6 +13,7 @@ import (
 
 func InvockConst(e expr, r *RunNode) (ret interface{}) {
 	Debug("------------------------------------")
+
 	switch e.method {
 	case "println":
 		fmt.Println(e.args)
@@ -28,6 +30,26 @@ func InvockConst(e expr, r *RunNode) (ret interface{}) {
 			Error(" type = %+v ", e.args[0])
 
 		}
+	case "int64":
+		return cast.ToInt64(e.args[0])
+	case "string":
+		return cast.ToString(e.args[0])
+	case "[]byte":
+		return cast.ToString(e.args[0])
+	case "int8":
+		return cast.ToInt8(e.args[0])
+	case "int16":
+		return cast.ToInt8(e.args[0])
+	case "int32":
+		return cast.ToInt8(e.args[0])
+	case "uint64":
+		return cast.ToUint64(e.args[0])
+	case "uint32":
+		return cast.ToUint32(e.args[0])
+	case "uint16":
+		return cast.ToUint16(e.args[0])
+	case "uint8":
+		return cast.ToUint8(e.args[0])
 	default:
 		if f := r.GetFunc(e.method); f != nil {
 			rc := r.Child()
@@ -56,12 +78,21 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 		}
 		ins := make([]reflect.Value, 0)
 		for _, i := range e.args {
-			ins = append(ins, reflect.ValueOf(i))
+			if i != nil {
+				ins = append(ins, reflect.ValueOf(i))
+			} else {
+				ev := getEmpty()
+				ins = append(ins, reflect.ValueOf(ev))
+				Debug("kind = %#v,nil? = %#v", reflect.ValueOf(ev).Kind(), ev == nil)
+			}
 		}
 		rm := reflect.ValueOf(method)
 		if !rm.IsValid() {
 			Error("method =  %#v", method)
 		}
+		//if rm.Type().NumIn() > len(ins) {
+		//	Error("invalid method call in = %v oin = %v ", rm.Type().NumIn(), len(ins))
+		//}
 		rret := rm.Call(ins)
 		rets := make([]interface{}, 0)
 		for _, rr := range rret {
@@ -108,6 +139,7 @@ func InvockCos(f *ast.FuncDecl, rc *RunNode, e expr) (ret []interface{}) {
 		Debug("f.body---> %#v  \n\n", f.Body.List[0])
 	}
 	ret = CompileFuncDecl(f, rc)
+	Debug("ret = %#v", ret)
 	return
 }
 

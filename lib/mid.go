@@ -7,7 +7,9 @@ import (
 
 func CompileArgs(args []ast.Expr, r *RunNode) (retArgs []interface{}) {
 	for _, a := range args {
-		retArgs = append(retArgs, CompileExpr(a, r))
+		right := CompileExpr(a, r)
+		retArgs = append(retArgs, right)
+		Debug("add args %#v,len =%+v", right, len(retArgs))
 	}
 	return
 }

@@ -1,0 +1,29 @@
+import "fmt"
+var a int = 1
+fmt.Println(">>a ->",a)
+var b string = "11"
+fmt.Println(">>b ->",b)
+var c bool = true
+fmt.Println(">>c ->",c)
+var d int64 = int64(1)
+fmt.Println(">>d ->",d)
+var d2 []byte = []byte("111")
+fmt.Println(">>d2 ->",d2)
+var e int8 = int8(1)
+fmt.Println(">>e ->",e)
+var f int16 = int16(1)
+fmt.Println(">>f ->",f)
+var g int32 = int32(1)
+fmt.Println(">>g ->",g)
+var h uint8 = uint8(1)
+fmt.Println(">>h ->",h)
+var i uint16 = uint16(1)
+fmt.Println(">>i ->",i)
+var j uint32 = uint32(1)
+fmt.Println(">>j ->",j)
+var k uint64 = uint64(1)
+fmt.Println(">>k ->",k)
+var l char = '1'
+fmt.Println(">>l ->",l)
+var m interface{} = nil
+fmt.Println(">>m ->",m)
