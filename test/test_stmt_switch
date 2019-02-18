@@ -1,0 +1,18 @@
+var a = 1
+
+switch a {
+	case 2:
+	println(">> should not print alse Error")
+	case 1:
+	println(">> case out")
+	default:
+	println(">> Error")
+}
+
+switch a {
+        case 2:
+        println(">> should not print alse Error")
+        default:
+        println(">> case out")
+}
+

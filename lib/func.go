@@ -51,27 +51,39 @@ func LoadFunc(f *ast.FuncDecl, r *RunNode) {
 	}
 }
 
+func CompileIncDec(stmt *ast.IncDecStmt, r *RunNode) {
+	k := stmt.X.(*ast.Ident).Name
+	v := r.GetValue(k)
+	switch v := v.(type) {
+	case int:
+		v++
+		r.SetValue(k, v)
+	case int64:
+		v++
+		r.SetValue(k, v)
+	case float32:
+		v++
+		r.SetValue(k, v)
+	case float64:
+		v++
+		r.SetValue(k, v)
+	default:
+		Error("undefined type %#v", v)
+	}
+}
+
 func CompileFuncDecl(d *ast.FuncDecl, r *RunNode) (ret []interface{}) {
 	for _, stmt := range d.Body.List {
 		switch stmt := stmt.(type) {
-		case *ast.AssignStmt:
-			CompileAssignStmt(stmt, r)
-		case *ast.DeclStmt:
-			CompileDeclStmt(stmt, r)
-		case *ast.ExprStmt:
-			CompileExpr(stmt.X, r)
-		case *ast.RangeStmt:
-			Debug("range-> 0 : %#v, 1 : %#v, 2 : %#v, 3: %#v", stmt.Key, stmt.Value, stmt.X, stmt.Body.List)
-			CompileRangeStmt(stmt, r)
 		case *ast.ReturnStmt:
 			for _, result := range stmt.Results {
 				ret = append(ret, CompileExpr(result, r))
 			}
-		case *ast.ShellStmt:
-			CompileShell(stmt, r)
-		case *ast.EmptyStmt:
 		default:
-			Error("undefind value -> %#v", stmt)
+			hasR, ret := CompileStmt(stmt, r)
+			if hasR {
+				return ret
+			}
 		}
 	}
 	return

@@ -1,0 +1,6 @@
+println(">> define a = 1 b = 1")
+a := 1
+b := 1
+println(">> a++ and print a")
+a++
+println(a)

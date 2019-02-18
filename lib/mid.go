@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"fmt"
 	"github.com/f-shixiong/go-shell/lib/go/ast"
 	"github.com/f-shixiong/go-shell/lib/go/token"
 )
@@ -25,9 +24,11 @@ func CompileBinary(x *ast.BinaryExpr, r *RunNode) (ret interface{}) {
 		return BQuo(CompileExpr(x.X, r), CompileExpr(x.Y, r))
 	case token.EQL: //==
 		return CompileExpr(x.X, r) == CompileExpr(x.Y, r)
+	case token.LSS:
+		return BLss(CompileExpr(x.X, r), CompileExpr(x.Y, r))
 	//TODO
 	default:
-		fmt.Println("o it really happend ?")
+		Error("o it really happend ?,%+v", x.Op.String())
 	}
 	return
 }
@@ -69,7 +70,7 @@ func CompileBinary(x *ast.BinaryExpr, r *RunNode) (ret interface{}) {
         LSS    // <
         GTR    // >
         ASSIGN // =
-        NOT    // !
+	NOT    // !
 
         NEQ      // !=
         LEQ      // <=

@@ -44,12 +44,23 @@ func (r *RunNode) Get(scopes []string) Var {
 }
 
 func (r *RunNode) GetValue(k string) interface{} {
-	//TODO father
 	if val, ok := r.VarMap[k]; ok {
 		return val
-	} else {
-		return r.ImportMap[k]
+	} else if r.Father != nil {
+		return r.Father.GetValue(k)
 	}
+	return r.ImportMap[k]
+}
+
+func (r *RunNode) SetValue(k string, v interface{}) {
+	if _, ok := r.VarMap[k]; ok {
+		r.VarMap[k] = v
+	} else if r.Father != nil {
+		r.Father.SetValue(k, v)
+	} else {
+		Error("what k =%v,v=%v", k, v)
+	}
+
 }
 
 func (r *RunNode) GetType(k string) interface{} {

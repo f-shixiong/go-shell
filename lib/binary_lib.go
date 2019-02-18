@@ -70,3 +70,17 @@ func BQuo(l interface{}, r interface{}) interface{} {
 	}
 	return nil
 }
+
+func BLss(l interface{}, r interface{}) bool {
+	switch l := l.(type) {
+	case int:
+		return l < cast.ToInt(r)
+	case int64:
+		return l < cast.ToInt64(r)
+	case float32:
+		return l < cast.ToFloat32(r)
+	default:
+		Test("TODO ? when do? %#v", l)
+	}
+	return false
+}

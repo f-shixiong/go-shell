@@ -1,0 +1,12 @@
+println(">> print 1-10 by for")
+for i := 0; i < 10; i++ {
+	println(i)
+}
+
+println(">> define j and for j 1-10")
+j := 0
+for ;j< 10;j++ {
+	println(j)
+}
+println(">> pint j")
+println(j)

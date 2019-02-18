@@ -1,0 +1,22 @@
+var a = 1
+if a == 1 {
+	println(">> case 1")
+} else {
+	println(">> Error")
+}
+
+if a == 2 {
+	println(">> Error")
+} else if a == 1{
+	println(">> case 2")
+}
+
+if a == 3 {
+	println(">> Error")
+}else {
+	println(">> case 3")
+}
+
+if b := a ; b < 2 {
+	println(">> case 4")
+}
