@@ -21,7 +21,7 @@ go-shell [your file]
 > - [ ] switch
 > - [ ] if
 > - [x] append
-> - [ ]
+> - [ ] delete
 #### 数据类型
 > - [x]int,string
 > - [ ]all
