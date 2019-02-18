@@ -1,0 +1,4 @@
+println(">> a should = 2")
+a := 1
+a += 1
+println(a)

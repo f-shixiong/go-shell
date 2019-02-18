@@ -25,7 +25,7 @@ func Error(f string, args ...interface{}) {
 }
 
 func Test(f string, args ...interface{}) {
-	fix := "<Test> ["
+	fix := "<Test> "
 	fmt.Printf(fix+f+"\n\n", args...)
 }
 

@@ -14,6 +14,7 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 	if len(stmt.Lhs) > 1 {
 		notSlice = true
 	}
+	Debug("stmt = %#v,tok = %#v", stmt, stmt.Tok.String())
 	for i, k := range stmt.Lhs {
 		j := -1
 		if notSlice {
@@ -26,13 +27,8 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 		switch k := k.(type) {
 		case *ast.Ident:
 			rv := CompileExpr(right, r)
-			if len(stmt.Rhs) >= i {
-				//*ast.BasicLit
-				r.VarMap[k.Name] = getResult(j, rv)
-			} else {
-				r.VarMap[k.Name] = getResult(j, rv)
-
-			}
+			//r.VarMap[k.Name] = getResult(j, rv)
+			AssignIdent(stmt.Tok, k.Name, r, getResult(j, rv))
 		case *ast.IndexExpr:
 			Debug("test--> %#v,%#v", k.X, k.Index)
 			Debug("test if com --> %#v", CompileExpr(k.Index, r))

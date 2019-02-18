@@ -14,18 +14,35 @@ func CompileArgs(args []ast.Expr, r *RunNode) (retArgs []interface{}) {
 
 func CompileBinary(x *ast.BinaryExpr, r *RunNode) (ret interface{}) {
 	switch x.Op {
-	case token.ADD: //+
+	case token.ADD: // +
 		return BAdd(CompileExpr(x.X, r), CompileExpr(x.Y, r))
-	case token.SUB:
+	case token.SUB: // -
 		return BSub(CompileExpr(x.X, r), CompileExpr(x.Y, r))
-	case token.MUL:
+	case token.MUL: // *
 		return BMul(CompileExpr(x.X, r), CompileExpr(x.Y, r))
-	case token.QUO:
+	case token.QUO: // /
 		return BQuo(CompileExpr(x.X, r), CompileExpr(x.Y, r))
-	case token.EQL: //==
+	case token.REM: // %
+		return BRem(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+	case token.AND: // &
+		return BAnd(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+	case token.OR: // |
+		return BOr(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+	case token.XOR: // ^
+		return BXor(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+	case token.SHL: // <<
+		return BShl(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+	case token.SHR: // >>
+		return BShr(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+	case token.EQL: // ==
 		return CompileExpr(x.X, r) == CompileExpr(x.Y, r)
-	case token.LSS:
+	case token.LSS: // <
 		return BLss(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+	case token.NEQ:
+		return CompileExpr(x.X, r) != CompileExpr(x.Y, r)
+	case token.GTR: // >
+		return BGtr(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+
 	//TODO
 	default:
 		Error("o it really happend ?,%+v", x.Op.String())

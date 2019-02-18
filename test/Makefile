@@ -89,3 +89,11 @@ const:
 	@echo "====test const  ===="
 	@echo "> 支持 const       <"
 	@go run main.go test/const
+inc:
+	@echo "====test --  ======="
+	@echo "> 支持 --          <"
+	@go run main.go test/test_--
+binary_assi:
+	@echo "====test += ======="
+	@echo "> 支持 +=          <"
+	@go run main.go test/binary_assi

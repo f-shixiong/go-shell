@@ -6,8 +6,8 @@ cd go-shell && go build
 ### how to use
 go-shell [your file]
 
-### 支持项
-#### 基本+-*/
+### 支持内容
+#### 运算符
 > - [x] +-*/
 > - [ ] all
 #### func
@@ -29,8 +29,12 @@ go-shell [your file]
 > - [x] println
 > - [x] var
 > - [x] const
+> - [ ] break
+> - [ ] defer
+> - [ ] goto
 #### 数据类型
 > - [x] int,string
+> - [x] map,list
 > - [ ] all
 > - [ ] struct !difficult
 #### import
@@ -43,7 +47,14 @@ go-shell [your file]
 > - [ ] 支持check关键字
 
 #### repl
-> - [ ] 支持repl but why
+> - [ ] 支持repl
+
+#### goruntime
+> - [ ] 支持go
+> - [ ] 支持select
+
+#### 断言
+> - [ ] 支持断言
 
 ### 更新日志
 > - 2.10-just can run,支持了基本+-*/

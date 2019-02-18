@@ -1,0 +1,5 @@
+println(">> define a")
+a := 1
+println(">> print a--")
+a--
+println(a)

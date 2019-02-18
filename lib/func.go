@@ -2,6 +2,7 @@ package lib
 
 import (
 	"github.com/f-shixiong/go-shell/lib/go/ast"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 )
 
 func LoadFunc(f *ast.FuncDecl, r *RunNode) {
@@ -54,18 +55,40 @@ func LoadFunc(f *ast.FuncDecl, r *RunNode) {
 func CompileIncDec(stmt *ast.IncDecStmt, r *RunNode) {
 	k := stmt.X.(*ast.Ident).Name
 	v := r.GetValue(k)
+	Debug("stmt = %#v", stmt)
+	tok := stmt.Tok
 	switch v := v.(type) {
 	case int:
-		v++
+		if tok == token.INC {
+			v++
+		}
+		if tok == token.DEC {
+			v--
+		}
 		r.SetValue(k, v)
 	case int64:
-		v++
+		if tok == token.INC {
+			v++
+		}
+		if tok == token.DEC {
+			v--
+		}
 		r.SetValue(k, v)
 	case float32:
-		v++
+		if tok == token.INC {
+			v++
+		}
+		if tok == token.DEC {
+			v--
+		}
 		r.SetValue(k, v)
 	case float64:
-		v++
+		if tok == token.INC {
+			v++
+		}
+		if tok == token.DEC {
+			v--
+		}
 		r.SetValue(k, v)
 	default:
 		Error("undefined type %#v", v)
