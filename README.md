@@ -8,31 +8,31 @@ go-shell [your file]
 
 ### 支持项
 #### 基本+-*/
-> -[x] +-*/
-> -[] all
+> - [x] +-*/
+> - [ ] all
 #### func
-> -[x] 自定义func
-> -[x] 结构体func
-> -[] 递归func
-> -[x] return单个值
-> -[x] return多个值
+> - [x] 自定义func
+> - [x] 结构体func
+> - [ ] 递归func
+> - [x] return单个值
+> - [x] return多个值
 #### stmt关键字
-> -[x] for
-> -[] switch
-> -[] if
-> -[x] append
-> -[]
+> - [x] for
+> - [ ] switch
+> - [ ] if
+> - [x] append
+> - [ ]
 #### 数据类型
-> -[x]int,string
-> -[]all
-> -[]struct
+> - [x]int,string
+> - [ ]all
+> - [ ]struct
 #### import
-> -[x]非golang官方包
-> -[]官方带internal package
+> - [x]非golang官方包
+> - [ ]官方带internal package
 
 #### candy
-> -[x] 支持@shell@直接执行shell
-> -[] 支持check关键字
+> - [x] 支持@shell@直接执行shell
+> - [ ] 支持check关键字
 
 ### 支持日志
 >> 2.10-支持基本+-*/
