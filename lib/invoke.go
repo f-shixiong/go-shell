@@ -76,6 +76,13 @@ func InvockConst(e expr, r *RunNode) (ret interface{}) {
 	return
 }
 
+func InvockInternal(e expr, r *RunNode) (ret interface{}) {
+	//删除internal func
+	//build so
+	//import internal func
+	return nil
+}
+
 func Invock(e expr, r *RunNode) (ret interface{}) {
 	if e.left == nil {
 		return InvockConst(e, r)
@@ -166,7 +173,6 @@ func InvockShell(stmt *ast.ShellStmt, r *RunNode) string {
 		}
 	}
 	cmd := exec.Command(arr[0], brr...)
-
 	ret, err := cmd.Output()
 	if err != nil {
 		Error("err = %v", err)

@@ -38,6 +38,7 @@ go-shell [your file]
 >> - [x] break
 >> - [ ] defer
 >> - [ ] goto
+>> - [ ] ...
 >##### 数据类型
 >> - [x] int,string
 >> - [x] map,list
