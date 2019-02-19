@@ -58,7 +58,6 @@ func CompileAssignStmt(stmt *ast.AssignStmt, r *RunNode) {
 			default:
 				Error("t = %#v", t)
 			}
-			//Test("kk = %#v, vv = %#v", k.X.(*ast.Ident).Name, t)
 			r.VarMap[k.X.(*ast.Ident).Name] = t
 		default:
 			Error("k = %#v ", k)

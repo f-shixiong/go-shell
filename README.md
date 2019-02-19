@@ -22,13 +22,13 @@ go-shell [your file]
 >> - [x] 递归func
 >> - [x] return单个值
 >> - [x] return多个值
->> - [ ] 跨域get set ?
+>> - [x] 跨域get set 
 >##### stmt关键字
 >> - [x] for
 >> - [x] switch todo
 >> - [x] if
 >> - [x] append
->> - [ ] delete
+>> - [x] delete
 >> - [x] range
 >> - [x] make
 >> - [x] new
@@ -66,4 +66,4 @@ go-shell [your file]
 > - 2.16-支持动态import
 > - 2.17-支持了shell,支持return 多个值，什么都没改自己支持了const，基本靠命,支持+=等
 > - 2.18-什么都没改自己支持了const，基本靠命,支持+=等,支持了所有数据结构，所有的运算符
-> - 2.19-支持了break关键字
+> - 2.19-支持了break关键字,支持delete

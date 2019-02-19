@@ -30,6 +30,10 @@ dev4:
 	@echo "====test leve 4.0===="
 	@echo "> 支持for循环 <"
 	@go run main.go test/test4
+dev4.1:
+	@echo "====test leve 4.1===="
+	@echo "> 支持for循环 <"
+	@go run main.go test/test4.1
 dev5:
 	@echo "====test leve 5.0===="
 	@echo "> 支持append <"

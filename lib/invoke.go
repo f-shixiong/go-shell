@@ -30,6 +30,16 @@ func InvockConst(e expr, r *RunNode) (ret interface{}) {
 			Error(" type = %+v ", e.args[0])
 
 		}
+	case "delete":
+		if len(e.args) != 2 {
+			Error("fail call delete %+v", e)
+		}
+		left, ok := e.args[0].(map[interface{}]interface{})
+		if !ok {
+			Error("fail call delete %+v", e)
+		}
+		delete(left, e.args[1])
+
 	case "int64":
 		return cast.ToInt64(e.args[0])
 	case "string":

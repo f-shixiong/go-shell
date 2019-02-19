@@ -1,0 +1,11 @@
+println(">>define mmp has i_1 i_2")
+var mmp = make(map[string]string,0)
+mmp["i_1"] = "v_1"
+mmp["i_2"] = "v_2"
+println(">> delete map i_1")
+delete(mmp,"i_1")
+for k, v := range mmp {
+        println(k)
+        println(v)
+}
+

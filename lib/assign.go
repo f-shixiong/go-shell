@@ -7,7 +7,11 @@ import (
 func AssignIdent(tok token.Token, left string, r *RunNode, right interface{}) {
 	var newV interface{}
 	switch tok {
-	case token.DEFINE, token.ASSIGN:
+	case token.DEFINE:
+		newV = right
+		r.VarMap[left] = newV
+		return
+	case token.ASSIGN:
 		newV = right
 	case token.ADD_ASSIGN:
 		newV = BAdd(r.GetValue(left), right)
@@ -32,5 +36,6 @@ func AssignIdent(tok token.Token, left string, r *RunNode, right interface{}) {
 	default:
 		Error(" todo %#v", tok.String())
 	}
-	r.VarMap[left] = newV
+	Debug("left = %#v, right =%#v", left, newV)
+	r.SetValue(left, newV)
 }
