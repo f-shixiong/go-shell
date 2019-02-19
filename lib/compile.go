@@ -90,23 +90,27 @@ func CompileGenDecl(d *ast.GenDecl, r *RunNode) {
 	}
 }
 
-func CompileRangeStmt(stmt *ast.RangeStmt, r *RunNode) {
+func CompileRangeStmt(stmt *ast.RangeStmt, r *RunNode) (hasR bool, ret []interface{}) {
 	xs := CompileExpr(stmt.X, r)
+	hasBreak := false
 	switch xs := xs.(type) {
 	case map[interface{}]interface{}:
 		for k, v := range xs {
 			rc := r.Child()
 			rc.VarMap[stmt.Key.(*ast.Ident).Name] = k
 			rc.VarMap[stmt.Value.(*ast.Ident).Name] = v
-			f := &ast.FuncDecl{
-				Body: stmt.Body,
+			for _, stmt := range stmt.Body.List {
+				hasR, hasBreak, ret = CompileStmt(stmt, rc)
+				if hasR || hasBreak {
+					return
+				}
 			}
-			CompileFuncDecl(f, rc)
 		}
 	default:
 		Error("xs = %#v", xs)
 
 	}
+	return
 }
 
 func CompileShell(stmt *ast.ShellStmt, r *RunNode) {

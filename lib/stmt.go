@@ -2,10 +2,11 @@ package lib
 
 import (
 	"github.com/f-shixiong/go-shell/lib/go/ast"
+	"github.com/f-shixiong/go-shell/lib/go/token"
 	"github.com/spf13/cast"
 )
 
-func CompileStmt(stmt ast.Stmt, r *RunNode) (hasR bool, ret []interface{}) {
+func CompileStmt(stmt ast.Stmt, r *RunNode) (hasR bool, hasBreak bool, ret []interface{}) {
 	switch stmt := stmt.(type) {
 	case *ast.AssignStmt:
 		CompileAssignStmt(stmt, r)
@@ -15,7 +16,10 @@ func CompileStmt(stmt ast.Stmt, r *RunNode) (hasR bool, ret []interface{}) {
 		CompileExpr(stmt.X, r)
 	case *ast.RangeStmt:
 		Debug("range-> 0 : %#v, 1 : %#v, 2 : %#v, 3: %#v", stmt.Key, stmt.Value, stmt.X, stmt.Body.List)
-		CompileRangeStmt(stmt, r)
+		hasR, ret = CompileRangeStmt(stmt, r)
+		if hasR {
+			return
+		}
 	case *ast.ShellStmt:
 		CompileShell(stmt, r)
 	case *ast.IncDecStmt:
@@ -31,33 +35,45 @@ func CompileStmt(stmt ast.Stmt, r *RunNode) (hasR bool, ret []interface{}) {
 			ret = append(ret, CompileExpr(result, r))
 		}
 	case *ast.SwitchStmt:
-		CompileSwitchStmt(stmt, r)
+		hasR, hasBreak, ret = CompileSwitchStmt(stmt, r)
+		if hasR || hasBreak {
+			return
+		}
 	case *ast.IfStmt:
 		rc := r.Child()
-		CompileIfStmt(stmt, rc)
+		hasR, hasBreak, ret = CompileIfStmt(stmt, rc)
+		if hasR || hasBreak {
+			return
+		}
 	case *ast.EmptyStmt:
 	case nil:
+	case *ast.BranchStmt:
+		Debug("br = %#v,token=%#v", stmt, stmt.Tok.String())
+		if stmt.Tok == token.BREAK {
+			hasBreak = true
+			return
+		}
 	default:
 		Error("undefind value -> %#v", stmt)
 	}
 	return
 }
 
-func CompileIfStmt(stmt *ast.IfStmt, r *RunNode) (hasR bool, ret []interface{}) {
+func CompileIfStmt(stmt *ast.IfStmt, r *RunNode) (hasR bool, hasBreak bool, ret []interface{}) {
 	Debug("stmt = %#v,else = %#v", stmt, stmt.Else)
 	CompileStmt(stmt.Init, r)
 	cond := cast.ToBool(CompileExpr(stmt.Cond, r))
 	if cond {
 		for _, sc := range stmt.Body.List {
-			hasR, ret = CompileStmt(sc, r)
-			if hasR {
+			hasR, hasBreak, ret = CompileStmt(sc, r)
+			if hasR || hasBreak {
 				return
 			}
 		}
 	} else {
 		if el, ok := stmt.Else.(*ast.BlockStmt); ok {
 			for _, sc := range el.List {
-				hasR, ret = CompileStmt(sc, r)
+				hasR, _, ret = CompileStmt(sc, r)
 				if hasR {
 					return
 				}
@@ -80,10 +96,11 @@ func CompileForStmt(stmt *ast.ForStmt, r *RunNode) (hasR bool, ret []interface{}
 	default:
 		Error("sha? %#v", init)
 	}
+	hasBreak := false
 	for cast.ToBool(CompileExpr(stmt.Cond, rc)) {
 		for _, stmt := range stmt.Body.List {
-			hasR, ret = CompileStmt(stmt, rc)
-			if hasR {
+			hasR, hasBreak, ret = CompileStmt(stmt, rc)
+			if hasR || hasBreak {
 				return
 			}
 		}
@@ -92,7 +109,7 @@ func CompileForStmt(stmt *ast.ForStmt, r *RunNode) (hasR bool, ret []interface{}
 	return
 }
 
-func CompileSwitchStmt(stmt *ast.SwitchStmt, r *RunNode) (hasR bool, ret []interface{}) {
+func CompileSwitchStmt(stmt *ast.SwitchStmt, r *RunNode) (hasR bool, hasBreak bool, ret []interface{}) {
 	Debug("\ninit->%#v\ntag->%#v\nbody->%#v\n", stmt.Init, CompileExpr(stmt.Tag, r), stmt.Body.List)
 	tag := CompileExpr(stmt.Tag, r)
 	rc := r.Child()
@@ -114,8 +131,8 @@ func CompileSwitchStmt(stmt *ast.SwitchStmt, r *RunNode) (hasR bool, ret []inter
 		}
 		if match {
 			for _, stmt := range cc.Body {
-				hasR, ret = CompileStmt(stmt, rc)
-				if hasR {
+				hasR, hasBreak, ret = CompileStmt(stmt, rc)
+				if hasR || hasBreak {
 					return
 				}
 			}
@@ -124,7 +141,7 @@ func CompileSwitchStmt(stmt *ast.SwitchStmt, r *RunNode) (hasR bool, ret []inter
 	}
 	if defaultCase != nil {
 		for _, stmt := range defaultCase.Body {
-			hasR, ret = CompileStmt(stmt, rc)
+			hasR, _, ret = CompileStmt(stmt, rc)
 			if hasR {
 				return
 			}

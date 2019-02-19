@@ -103,7 +103,7 @@ func CompileFuncDecl(d *ast.FuncDecl, r *RunNode) (ret []interface{}) {
 				ret = append(ret, CompileExpr(result, r))
 			}
 		default:
-			hasR, ret := CompileStmt(stmt, r)
+			hasR, _, ret := CompileStmt(stmt, r)
 			if hasR {
 				return ret
 			}

@@ -6,6 +6,7 @@ println("=======================")
 for k, v := range mmp {
 	println(k)
 	println(v)
+	break
 }
 
 println("=======================")

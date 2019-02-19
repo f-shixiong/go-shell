@@ -71,6 +71,10 @@ func (r *RunNode) GetType(k string) interface{} {
 }
 
 func (r *RunNode) GetFunc(k string) *ast.FuncDecl {
-	//TODO father
-	return r.FuncMap[k]
+	if _, ok := r.FuncMap[k]; ok {
+		return r.FuncMap[k]
+	} else if r.Father != nil {
+		return r.Father.GetFunc(k)
+	}
+	return nil
 }

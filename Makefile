@@ -6,3 +6,5 @@ build:
 n:basiclit
 jock:
 	find .|grep -v git|grep -v .so|grep -v code-cache|grep -v ast|grep -v parse|grep -v token|grep -v scanner|xargs cat|wc -l
+check:
+	make all|grep Error

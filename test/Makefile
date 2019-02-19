@@ -10,6 +10,18 @@ dev2:
 	@echo "====test leve 2.0===="
 	@echo "> 支持自定义func < "
 	@go run main.go test/test2
+dev2.1:
+	@echo "====test leve 2.1===="
+	@echo "> 支持自定义func < "
+	@go run main.go test/test2.1
+dev2.2:
+	@echo "====test leve 2.2===="
+	@echo "> 支持自定义func < "
+	@go run main.go test/test2.2
+dev2.3:
+	@echo "====test leve 2.3===="
+	@echo "> 支持自定义func < "
+	@go run main.go test/test2.3
 dev3:
 	@echo "====test leve 3.0===="
 	@echo "> 支持复杂数据类型 <"

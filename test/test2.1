@@ -1,0 +1,13 @@
+func ss(i int){
+	println(i<10)
+	if i< 10 {
+		return
+	}
+	i--
+	println(i)
+	ss(i)
+}
+
+var i = 19
+ss(i)
+
