@@ -1,16 +1,20 @@
 ## go-shell
 ### how to install
+```
 install go
 clone https://github.com/f-shixiong/go-shell.git
 cd go-shell && go build
+```
 ### how to use
+```
 go-shell [your file]
+```
 
 
 ### support
 >##### what new
 ```
-√  类型强转 
+√  类型强转    : example -> a := "1"   b := int(a)   b = 1  
 √  candy_shell : use shell like  var a = @echo 'valueA'@ -> then a = "valueA"
 ×  check关键字 from go2
 ```
