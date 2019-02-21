@@ -59,7 +59,7 @@ func autoImport(path string) error {
 				}
 			}
 			//TODO 20
-			pluginName := strings.Replace(path, "/", "@@@@@@", 20) + ".so"
+			pluginName := strings.Replace(path, "/", "@@@@@@", 256) + ".so"
 			installPlugin(pluginName, codeCachePath, installPath, vendorPath)
 			break
 		}

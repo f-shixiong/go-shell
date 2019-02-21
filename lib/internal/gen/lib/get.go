@@ -18,9 +18,20 @@ func GetRty(tp ast.Expr) string {
 		}
 		rty = fmt.Sprintf("[%s]%s", l, elt)
 	case *ast.StarExpr:
-		rty = "*" + ft.X.(*ast.Ident).Name
+		switch x := ft.X.(type) {
+		case *ast.Ident:
+			rty = "*" + x.Name
+		default:
+			fmt.Printf("sp -2 %#v\n", x)
+
+		}
 	case *ast.SelectorExpr:
 		rty = ft.X.(*ast.Ident).Name + "." + ft.Sel.Name
+	case *ast.Ellipsis:
+		rty = fmt.Sprintf("...%v", GetRty(ft.Elt))
+	case *ast.FuncType:
+		rty = getFuncLit(convertFuncType(ft))
+		fmt.Printf("func = %#v\n", "todo")
 	default:
 		fmt.Printf("sp -1 %#v\n", ft)
 

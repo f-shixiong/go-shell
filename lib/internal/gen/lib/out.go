@@ -2,6 +2,7 @@ package lib
 
 import (
 	"fmt"
+	"strings"
 )
 
 type FC struct {
@@ -20,17 +21,20 @@ type GEN struct {
 }
 
 var fmtter = `
-func %s %s (%s) %s {
+func %s %s(%s) %s {
 	%s := %s.%s(%s)
 	return %s
 }
 `
 var fmtter2 = `
-func %s %s (%s) {
+func %s %s(%s) {
 	%s.%s(%s)
 }
 
 `
+
+var flit1 = `func(%s)`
+var flit2 = `func(%s)%s`
 var genFmtter = `
 %s %s %s
 `
@@ -46,8 +50,19 @@ type %s struct {
 }
 `
 
-func OutFunc(fc FC, pack string) {
+func getFuncLit(fc FC) string {
+	if fc.Rev != "" {
+		panic("sup")
+	}
+	if fc.RetStr == "" {
+		return fmt.Sprintf(flit1, fc.Params)
+	} else {
+		return fmt.Sprintf(flit2, fc.Params, fc.Ret)
+	}
 
+}
+
+func OutFunc(fc FC, pack string) {
 	if fc.Rev != "" {
 		return
 	}
@@ -71,8 +86,27 @@ func OutGen(gen GEN, pack string) {
 
 func Out(pack string, funcMap map[string]FC, genMap map[string]GEN) {
 	fmt.Printf("package %s\n", pack)
+	imap := map[string]string{}
+	for _, v := range genMap {
+		if v.L1 != "import" {
+			continue
+		}
+		iarr := strings.Split(v.Name, "\n")
+		for _, i := range iarr {
+			imap[i] = ""
+		}
+	}
+	iGen := GEN{}
+	iGen.L1 = "import"
+	iiarr := []string{}
+	for k, _ := range imap {
+		iiarr = append(iiarr, k)
+	}
+	iGen.Name = strings.Join(iiarr, "\n	")
+	OutGen(iGen, pack)
+
 	for k, v := range genMap {
-		if v.L1 != "import" && skiPrivate(k) {
+		if v.L1 == "import" || skiPrivate(k) || k == "" {
 			continue
 		}
 		OutGen(v, pack)
@@ -88,6 +122,9 @@ func Out(pack string, funcMap map[string]FC, genMap map[string]GEN) {
 }
 
 func skiPrivate(k string) bool {
+	if len(k) == 0 {
+		return false
+	}
 	b := []byte(k[0:1])[0]
 	if b <= 90 && b >= 65 {
 		return false
