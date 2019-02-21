@@ -42,4 +42,5 @@ go-shell [your file]
 19.02.17-支持了shell,支持return 多个值，什么都没改自己支持了const，基本靠命,支持+=等
 19.02.18-什么都没改自己支持了const，基本靠命,支持+=等,支持了所有数据结构，所有的运算符
 19.02.19-支持了break关键字,支持delete
+19.02.21-使用mod@raojian,gen internal_package解决internal无法被引用问题
 ```

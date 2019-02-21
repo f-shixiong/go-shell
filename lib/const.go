@@ -5,6 +5,10 @@ import (
 	"github.com/f-shixiong/go-shell/lib/internal/strings"
 )
 
+const (
+	SELF = "self"
+)
+
 var baseType = map[string]bool{
 	"int":         true,
 	"int64":       true,
