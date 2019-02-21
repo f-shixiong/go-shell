@@ -1,11 +1,11 @@
 ## go-shell
-### how to install
+### Installation 
 ```
-install go
-clone https://github.com/f-shixiong/go-shell.git
-cd go-shell && go build
+git clone https://github.com/f-shixiong/go-shell.git 
+cd go-shell
+go build
 ```
-### how to use
+### Getting Started
 ```
 go-shell [your file]
 ```
