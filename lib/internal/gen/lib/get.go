@@ -11,12 +11,17 @@ func GetRty(tp ast.Expr) string {
 	case *ast.Ident:
 		rty = ft.Name
 	case *ast.ArrayType:
-		elt := ft.Elt.(*ast.Ident).Name
-		l := ""
-		if ft.Len != nil {
-			l = fmt.Sprintf("%v", ft.Len)
+		switch elt := ft.Elt.(type) {
+		case *ast.Ident:
+			l := ""
+			if ft.Len != nil {
+				l = fmt.Sprintf("%v", ft.Len)
+			}
+			rty = fmt.Sprintf("[%s]%s", l, elt.Name)
+		default:
+			rty = "undefine"
+			fmt.Printf("sp -1 %#v\n", ft)
 		}
-		rty = fmt.Sprintf("[%s]%s", l, elt)
 	case *ast.StarExpr:
 		switch x := ft.X.(type) {
 		case *ast.Ident:
@@ -31,7 +36,6 @@ func GetRty(tp ast.Expr) string {
 		rty = fmt.Sprintf("...%v", GetRty(ft.Elt))
 	case *ast.FuncType:
 		rty = getFuncLit(convertFuncType(ft))
-		fmt.Printf("func = %#v\n", "todo")
 	default:
 		fmt.Printf("sp -1 %#v\n", ft)
 

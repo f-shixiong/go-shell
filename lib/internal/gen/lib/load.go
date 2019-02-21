@@ -167,8 +167,16 @@ func getGen(decl *ast.GenDecl) GEN {
 	case token.TYPE:
 		gen.L1 = "type"
 		for _, sp := range decl.Specs {
-			gen.Name += sp.(*ast.TypeSpec).Name.Name
+			csp := sp.(*ast.TypeSpec)
+			gen.Name += csp.Name.Name
+			if _, ok := csp.Type.(*ast.Ident); ok {
+				gen.T = "ident"
+			}
+			if _, ok := csp.Type.(*ast.InterfaceType); ok {
+				gen.T = "interface"
+			}
 		}
+
 	case token.CONST:
 		gen.L1 = "const"
 		for _, sp := range decl.Specs {

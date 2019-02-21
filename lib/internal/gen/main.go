@@ -12,7 +12,7 @@ import (
 )
 
 var testfile = "/home/shizuo/disk/go/src/strings/builder.go"
-var testDir = "/home/shizuo/disk/go/src/strings"
+var testDir = "/home/shizuo/disk/go/src/net"
 
 func main() {
 	var dir string

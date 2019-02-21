@@ -18,6 +18,7 @@ type FC struct {
 type GEN struct {
 	Name string
 	L1   string
+	T    string
 }
 
 var fmtter = `
@@ -47,6 +48,17 @@ import (
 var typeFmtter = `
 type %s struct {
 	inside %s
+}
+`
+var tmapFmtter = `
+var StuMap = map[string]interface{}{
+	%s
+}
+`
+
+var fmapFmtter = `
+var FucMap = map[string]interface{}{
+	%s
 }
 `
 
@@ -84,10 +96,42 @@ func OutGen(gen GEN, pack string) {
 	}
 }
 
+func OutType(tmap map[string]GEN, pack string) {
+	tpArr := []string{}
+	for k, v := range tmap {
+		if skiPrivate(k) {
+			continue
+		}
+		if v.T != "" {
+			continue
+		}
+		tpArr = append(tpArr, fmt.Sprintf(`"%s":%s`, k, pack+"."+k+"{},\n	"))
+	}
+	fmt.Printf(tmapFmtter, strings.Join(tpArr, ""))
+}
+
+func OutFuc2(fArr []string, pack string) {
+	cfArr := []string{}
+	for _, k := range fArr {
+		if skiPrivate(k) {
+			continue
+		}
+		cfArr = append(cfArr, fmt.Sprintf(`"%s":%s`, k, pack+"."+k+",\n        "))
+	}
+	fmt.Printf(fmapFmtter, strings.Join(cfArr, ""))
+
+}
+
 func Out(pack string, funcMap map[string]FC, genMap map[string]GEN) {
 	fmt.Printf("package %s\n", pack)
+	fmt.Printf(`import "%s"`, pack)
 	imap := map[string]string{}
+	tmap := map[string]GEN{}
 	for _, v := range genMap {
+		if v.L1 == "type" {
+			tmap[v.Name] = v
+			continue
+		}
 		if v.L1 != "import" {
 			continue
 		}
@@ -103,21 +147,25 @@ func Out(pack string, funcMap map[string]FC, genMap map[string]GEN) {
 		iiarr = append(iiarr, k)
 	}
 	iGen.Name = strings.Join(iiarr, "\n	")
-	OutGen(iGen, pack)
-
+	_ = iGen
+	//OutGen(iGen, pack)
+	OutType(tmap, pack)
 	for k, v := range genMap {
-		if v.L1 == "import" || skiPrivate(k) || k == "" {
+		if v.L1 == "import" || v.L1 == "type" || skiPrivate(k) || k == "" {
 			continue
 		}
 		OutGen(v, pack)
 	}
-
+	fArr := []string{}
 	for k, v := range funcMap {
-		if skiPrivate(k) {
+		if skiPrivate(k) || v.Rev != "" {
 			continue
 		}
-		OutFunc(v, pack)
+		fArr = append(fArr, k)
+		_ = v
+		//OutFunc(v, pack)
 	}
+	OutFuc2(fArr, pack)
 
 }
 
