@@ -35,7 +35,7 @@ go-shell [your file]
 ```
 19.02.10-just can run,支持了基本+-*/
 19.02.12-支持自定义func,支持复杂数据类型,支持for循环,支持了println,支持了new、make、range
-19.02.13-支持append,2.13-支持自定义结构体TODO 非map实现，支持多层结构体
+19.02.13-支持append,-支持自定义结构体 TODO 需要非map实现，支持了多层结构体
 19.02.14-支持指针
 19.02.15-支持return，支持import，支持struct定义func
 19.02.16-支持动态import
@@ -43,4 +43,5 @@ go-shell [your file]
 19.02.18-什么都没改自己支持了const，基本靠命,支持+=等,支持了所有数据结构，所有的运算符
 19.02.19-支持了break关键字,支持delete
 19.02.21-使用mod@raojian,gen internal_package解决internal无法被引用问题
+19.02.22-支持了shell使用管道
 ```

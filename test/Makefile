@@ -81,15 +81,19 @@ dev10.1:
 	@go run main.go test/test10.1
 dev11:
 	@echo "====test leve 11.0===="
-	@echo "> 支持shell       <"
+	@echo "> 支持 candy_shell <"
 	@go run main.go test/test11.0
+dev11.1:
+	@echo "====test leve 11.1===="
+	@echo "> 支持candy_shell_1<"
+	@go run main.go test/shell
 dev12:
 	@echo "====test leve 12===="
-	@echo "> 支持全部二进制  <"
+	@echo "> 支持全部二进制   <"
 	@go run main.go test/test12
 dev13: 
 	@echo "====test leve 13===="
-	@echo "> 支持全部数据类型<"
+	@echo "> 支持全部数据类型 <"
 	@go run main.go test/test13
 for:
 	@echo "====test for    ===="

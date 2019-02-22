@@ -1,2 +1,2 @@
-var a =@echo 'this is test'@
+var a =@echo 'this is test'|xargs echo@
 println(a)
