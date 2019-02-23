@@ -18,6 +18,12 @@ go-shell [your file]
 √  candy_shell : use shell like  var a = @echo 'valueA'@ -> then a = "valueA"
 ×  check关键字 from go2
 ```
+
+### plan
+> - gopiter like jupyter 
+> - go-i go-repl
+> - shell-tools : support use go in shell 
+
 >##### diff from go-compile
 ```
 √  + - * / & % ^ && := = ...  
@@ -44,4 +50,5 @@ go-shell [your file]
 19.02.19-支持了break关键字,支持delete
 19.02.21-使用mod@raojian,gen internal_package解决internal无法被引用问题
 19.02.22-支持了shell使用管道
+19.02.22-支持并行串行shell
 ```

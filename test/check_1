@@ -1,0 +1,4 @@
+import "fmt"
+var err error
+
+fmt.Println(err)

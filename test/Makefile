@@ -123,3 +123,7 @@ basiclit:
 	@echo "====test basiclit=="
 	@echo "> 支持所有数据类型<"
 	@go run main.go test/basiclit
+check_1:
+	@echo "====test basiclit=="
+	@echo "> 支持所有数据类型<"
+	@go run main.go test/check_1

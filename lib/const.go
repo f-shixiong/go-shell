@@ -3,6 +3,7 @@ package lib
 import (
 	"github.com/f-shixiong/go-shell/lib/internal/net"
 	"github.com/f-shixiong/go-shell/lib/internal/strings"
+	"plugin"
 )
 
 const (
@@ -58,3 +59,5 @@ var internalPack = map[string]ipack{
 		fMap: net.FucMap,
 	},
 }
+
+var importMap map[string]plugin.Symbol = make(map[string]plugin.Symbol, 0)

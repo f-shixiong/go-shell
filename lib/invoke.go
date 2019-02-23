@@ -10,7 +10,6 @@ import (
 
 func InvockConst(e expr, r *RunNode) (ret interface{}) {
 	Debug("------------------------------------")
-
 	switch e.method {
 	case "println":
 		fmt.Println(e.args)
@@ -106,6 +105,34 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 		}
 		//if rm.Type().NumIn() > len(ins) {
 		//	Error("invalid method call in = %v oin = %v ", rm.Type().NumIn(), len(ins))
+		//}
+		rret := rm.Call(ins)
+		rets := make([]interface{}, 0)
+		for _, rr := range rret {
+			rets = append(rets, rr.Interface())
+		}
+		return rets
+	case ipack:
+		method, ok := l.fMap[e.method]
+		if !ok {
+			Error("method = %+v", e.method)
+		}
+		ins := make([]reflect.Value, 0)
+		for _, i := range e.args {
+			if i != nil {
+				ins = append(ins, reflect.ValueOf(i))
+			} else {
+				ev := getEmpty()
+				ins = append(ins, reflect.ValueOf(ev))
+				Debug("kind = %#v,nil? = %#v", reflect.ValueOf(ev).Kind(), ev == nil)
+			}
+		}
+		rm := reflect.ValueOf(method)
+		if !rm.IsValid() {
+			Error("method =  %#v", method)
+		}
+		//if rm.Type().NumIn() > len(ins) {
+		//      Error("invalid method call in = %v oin = %v ", rm.Type().NumIn(), len(ins))
 		//}
 		rret := rm.Call(ins)
 		rets := make([]interface{}, 0)

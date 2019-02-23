@@ -2,7 +2,6 @@ package lib
 
 import (
 	"github.com/f-shixiong/go-shell/lib/go/ast"
-	"plugin"
 )
 
 type Var struct {
@@ -24,11 +23,11 @@ func (Var) String() string {
 type RunNode struct {
 	Father *RunNode
 	//Vars      []Var
-	VarMap    map[string]interface{}
-	TypeMap   map[string]interface{}
-	childs    []*RunNode //TODO set father
-	FuncMap   map[string]*ast.FuncDecl
-	ImportMap map[string]plugin.Symbol
+	VarMap  map[string]interface{}
+	TypeMap map[string]interface{}
+	childs  []*RunNode //TODO set father
+	FuncMap map[string]*ast.FuncDecl
+	//ImportMap map[string]plugin.Symbol
 }
 
 func (r *RunNode) Child() *RunNode {
@@ -49,7 +48,13 @@ func (r *RunNode) GetValue(k string) interface{} {
 	} else if r.Father != nil {
 		return r.Father.GetValue(k)
 	}
-	return r.ImportMap[k]
+	if val, ok := importMap[k]; ok {
+		return val
+	}
+	if val, ok := internalPack[k]; ok {
+		return val
+	}
+	return nil
 }
 
 func (r *RunNode) SetValue(k string, v interface{}) {

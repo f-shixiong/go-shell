@@ -52,10 +52,7 @@ func CompileImportSpec(spe *ast.ImportSpec, r *RunNode) {
 	if err != nil {
 		Error("path = %#v,err = %#v", path, err)
 	}
-	if r.ImportMap == nil {
-		r.ImportMap = make(map[string]plugin.Symbol, 0)
-	}
 	arr := strings.Split(strings.Replace(spe.Path.Value, "\"", "", 2), "/")
 
-	r.ImportMap[arr[len(arr)-1]] = gdll
+	importMap[arr[len(arr)-1]] = gdll
 }
