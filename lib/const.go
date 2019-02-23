@@ -29,6 +29,7 @@ var baseType = map[string]bool{
 	"uint64":      true,
 	"char":        true,
 	"interface{}": true,
+	"error":       true,
 }
 
 type EmptyStruct interface {

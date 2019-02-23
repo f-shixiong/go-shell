@@ -20,21 +20,64 @@ const (
 
 var runNode = &lib.RunNode{}
 
+var (
+	mRepl = flag.Bool("r", false, "repl mode")
+	mFile = flag.String("f", "", "file mode")
+	mText = flag.String("t", "", "text mode")
+)
+
 func main() {
 	fmt.Printf("-----goshell 1.0 by dy.com------\n\n")
 	flag.Parse()
-	args := flag.Args()
-	if len(args) == 0 {
-		os.Exit(0)
+	var (
+		data []byte
+		err  error
+		fset = token.NewFileSet()
+	)
+
+	if *mFile != "" {
+		data, err = ioutil.ReadFile(*mFile)
+		if err != nil {
+			panic(err)
+		}
+	} else if *mText != "" {
+		data = []byte(*mText)
+	} else {
+		ReplMode(fset, nil, runNode)
 	}
-	data, err := ioutil.ReadFile(args[0])
-	if err != nil {
-		panic(err)
+	DataMode(fset, data, runNode)
+}
+
+func ReplMode(fset *token.FileSet, data []byte, r *lib.RunNode) {
+	var (
+		status = 0
+		let    = ""
+		let2   = ""
+		err    error
+		files  []*ast.File
+	)
+	_ = status
+	_ = err
+	_ = files
+	for {
+		fmt.Scanln(&let, &let2)
+		fmt.Printf("let = %s, let2 = %s\n", let, let2)
+		if let == "exit" || let2 == "exit" {
+
+			os.Exit(0)
+		}
+
 	}
-	let := ""
-	fset := token.NewFileSet()
-	files := make([]*ast.File, 0)
-	status := 0
+	//ExprFile(f, runNode)
+}
+
+func DataMode(fset *token.FileSet, data []byte, r *lib.RunNode) {
+	var (
+		status = 0
+		let    = ""
+		err    error
+		files  []*ast.File
+	)
 	for _, l := range strings.Split(string(data), "\n") {
 		if l == "" {
 			continue
@@ -66,25 +109,28 @@ func main() {
 		os.Exit(0)
 	}
 	for _, f := range files {
-		if len(f.Decls) == 0 {
-			continue
-		}
-		d := f.Decls[0]
-		switch d := d.(type) {
-		case *ast.GenDecl:
-			lib.CompileGenDecl(d, runNode)
-		case *ast.FuncDecl:
-			if d.Name.String() == "main" {
-				lib.CompileFuncDecl(d, runNode)
-			} else {
-				if runNode.FuncMap == nil {
-					runNode.FuncMap = make(map[string]*ast.FuncDecl, 0)
-				}
-				lib.LoadFunc(d, runNode)
-			}
-		default:
-			lib.Error("d = %#v", d)
-		}
+		ExprFile(f, runNode)
 	}
+}
 
+func ExprFile(file *ast.File, r *lib.RunNode) {
+	if len(file.Decls) == 0 {
+		return
+	}
+	d := file.Decls[0]
+	switch d := d.(type) {
+	case *ast.GenDecl:
+		lib.CompileGenDecl(d, runNode)
+	case *ast.FuncDecl:
+		if d.Name.String() == "main" {
+			lib.CompileFuncDecl(d, runNode)
+		} else {
+			if runNode.FuncMap == nil {
+				runNode.FuncMap = make(map[string]*ast.FuncDecl, 0)
+			}
+			lib.LoadFunc(d, runNode)
+		}
+	default:
+		lib.Error("d = %#v", d)
+	}
 }
