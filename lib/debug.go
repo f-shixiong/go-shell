@@ -8,6 +8,7 @@ import (
 )
 
 var openDebug = false
+var Mode = 0
 
 func Debug(f string, args ...interface{}) {
 	fix := "<Debug> "
@@ -21,7 +22,9 @@ func Error(f string, args ...interface{}) {
 	stack := getStack()
 	fix += stack + "] "
 	fmt.Printf(fix+f+"\n\n", args...)
-	os.Exit(0)
+	if Mode == 0 {
+		os.Exit(0)
+	}
 }
 
 func Test(f string, args ...interface{}) {

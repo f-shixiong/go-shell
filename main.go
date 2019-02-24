@@ -7,6 +7,7 @@ import (
 	"github.com/f-shixiong/go-shell/lib/go/ast"
 	"github.com/f-shixiong/go-shell/lib/go/parser"
 	"github.com/f-shixiong/go-shell/lib/go/token"
+	"github.com/peterh/liner"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -27,7 +28,7 @@ var (
 )
 
 func main() {
-	fmt.Printf("-----goshell 1.0 by dy.com------\n\n")
+	fmt.Printf("-----go-shell version:beta ------\n\n")
 	flag.Parse()
 	var (
 		data []byte
@@ -49,29 +50,53 @@ func main() {
 }
 
 func ReplMode(fset *token.FileSet, data []byte, r *lib.RunNode) {
+	lib.Mode = 1
 	var (
-		status = 0
-		let    = ""
-		let2   = ""
-		err    error
-		files  []*ast.File
+		code  = ""
+		step  = 0
+		err   error
+		files []*ast.File
+		lineR = liner.NewLiner()
 	)
-	_ = status
-	_ = err
-	_ = files
+	defer lineR.Close()
 	for {
-		fmt.Scanln(&let, &let2)
-		fmt.Printf("let = %s, let2 = %s\n", let, let2)
-		if let == "exit" || let2 == "exit" {
-
+		fmt.Printf("\033[32m%s [%d]↘\033[0m\n", "In", step)
+		let, _ := lineR.Prompt("")
+		code += let
+		if let == "exit" || let == ":q" || let == "quit" {
+			lineR.Close()
 			os.Exit(0)
 		}
-
+		if len(let) > 0 && let[len(let)-1] == ';' {
+			files, err = getFiles(fset, []byte(code), r)
+			if err != nil {
+				fmt.Printf("\033[31m%s\033[0m\n", "-------------------------------------------------")
+				fmt.Println(err)
+			} else {
+				fmt.Printf("\033[34m%s\033[0m\n", "-------------------------------------------------")
+				for _, f := range files {
+					ExprFile(f, r)
+				}
+			}
+			step++
+			code = ""
+		}
 	}
 	//ExprFile(f, runNode)
 }
 
 func DataMode(fset *token.FileSet, data []byte, r *lib.RunNode) {
+	files, err := getFiles(fset, data, r)
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _, f := range files {
+		ExprFile(f, runNode)
+	}
+
+}
+
+func getFiles(fset *token.FileSet, data []byte, r *lib.RunNode) ([]*ast.File, error) {
 	var (
 		status = 0
 		let    = ""
@@ -105,12 +130,9 @@ func DataMode(fset *token.FileSet, data []byte, r *lib.RunNode) {
 		}
 	}
 	if status != 0 {
-		fmt.Printf("compile fail > \n%s,err=%+v \n", let, err)
-		os.Exit(0)
+		return nil, fmt.Errorf("compile fail > \n%s,err=%+v \n", let, err)
 	}
-	for _, f := range files {
-		ExprFile(f, runNode)
-	}
+	return files, nil
 }
 
 func ExprFile(file *ast.File, r *lib.RunNode) {
