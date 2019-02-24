@@ -57,13 +57,16 @@ func ReplMode(fset *token.FileSet, data []byte, r *lib.RunNode) {
 		err   error
 		files []*ast.File
 		lineR = liner.NewLiner()
+		begin = true
 	)
 	defer lineR.Close()
 	for {
-		fmt.Printf("\033[32m%s [%d]↘\033[0m\n", "In", step)
+		if begin {
+			fmt.Printf("\033[32m%s [%d]↘\033[0m\n", "In", step)
+		}
 		let, _ := lineR.Prompt("")
 		code += let
-		if let == "exit" || let == ":q" || let == "quit" {
+		if let == "exit" || let == ":q" || let == "quit" || let == "exit;" || let == "quit;" {
 			lineR.Close()
 			os.Exit(0)
 		}
@@ -80,6 +83,9 @@ func ReplMode(fset *token.FileSet, data []byte, r *lib.RunNode) {
 			}
 			step++
 			code = ""
+			begin = true
+		} else {
+			begin = false
 		}
 	}
 	//ExprFile(f, runNode)
