@@ -13,6 +13,8 @@ go-shell [your file]
 
 ### support
 >##### what new
+![](https://github.com/f-shixiong/go-shell/blob/master/samples/go-shell_1.gif?raw=true)
+>
 ```
 √  类型强转    : example -> a := "1"   b := int(a)   b = 1  
 √  candy_shell : use shell like  var a = @echo 'valueA'@ -> then a = "valueA"
