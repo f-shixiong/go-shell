@@ -43,7 +43,7 @@ func CompileImportSpec(spe *ast.ImportSpec, r *RunNode) {
 		path = defaultPluginLib + "/" + pluginName
 	} else {
 		path = installPath + "/" + pluginName
-		if !isExist(installPath + "/" + pluginName) {
+		if !isExist(installPath+"/"+pluginName) || FlushImport {
 			autoImport(strings.Replace(spe.Path.Value, "\"", "", 2))
 		}
 	}

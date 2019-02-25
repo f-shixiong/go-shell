@@ -7,7 +7,9 @@ go build
 ```
 ### Getting Started
 ```
-go-shell [your file]
+go-shell -f [your file]
+go-shell -f "println(1)"
+go-shell 
 ```
 
 
@@ -53,4 +55,5 @@ go-shell [your file]
 19.02.21-使用mod@raojian,gen internal_package解决internal无法被引用问题
 19.02.22-支持了shell使用管道
 19.02.22-支持并行串行shell
+19.02.24-支持了repl
 ```

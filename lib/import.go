@@ -12,6 +12,7 @@ import (
 
 var installPath = os.Getenv("GOPATH") + "/src/github.com/f-shixiong/go-shell/.plugin-lib"
 var defaultPluginLib = os.Getenv("GOPATH") + "/src/github.com/f-shixiong/go-shell/lib/plugin-lib"
+var FlushImport = false
 
 func autoImport(path string) error {
 	codeCachePath := os.Getenv("GOPATH") + "/src/github.com/f-shixiong/go-shell/.code-cache-lib/" + path

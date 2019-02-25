@@ -22,20 +22,24 @@ const (
 var runNode = &lib.RunNode{}
 
 var (
-	mRepl = flag.Bool("r", false, "repl mode")
-	mFile = flag.String("f", "", "file mode")
-	mText = flag.String("t", "", "text mode")
+	mRepl        = flag.Bool("r", false, "repl mode")
+	mFile        = flag.String("f", "", "file mode")
+	mText        = flag.String("t", "", "text mode")
+	bFlushImport = flag.Bool("flush_import", false, "flush package")
 )
 
 func main() {
 	fmt.Printf("-----go-shell version:beta ------\n\n")
 	flag.Parse()
+
 	var (
 		data []byte
 		err  error
 		fset = token.NewFileSet()
 	)
-
+	if bFlushImport != nil && *bFlushImport {
+		lib.FlushImport = true
+	}
 	if *mFile != "" {
 		data, err = ioutil.ReadFile(*mFile)
 		if err != nil {
