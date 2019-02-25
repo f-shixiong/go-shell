@@ -78,6 +78,7 @@ func installPlugin(pName, cPath, iPath, vPath string) {
 	Debug("copeC = %s", copyVendorCmd)
 	Debug("buildC = %s", buildCmd)
 	os.Setenv("GOPATH", os.Getenv("GOPATH")+":"+vPath)
+	os.Setenv("GO111MODULE", "auto")
 	cc := exec.Command("cp", "-r", vPath, cPath+"/vendor")
 	err := cc.Run()
 	if err != nil {
