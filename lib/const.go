@@ -1,8 +1,10 @@
 package lib
 
 import (
+	"github.com/f-shixiong/go-shell/lib/internal/math"
 	"github.com/f-shixiong/go-shell/lib/internal/net"
 	"github.com/f-shixiong/go-shell/lib/internal/strings"
+	"github.com/f-shixiong/go-shell/lib/internal/time"
 	"plugin"
 )
 
@@ -58,6 +60,14 @@ var internalPack = map[string]ipack{
 	"net": ipack{
 		tMap: net.StuMap,
 		fMap: net.FucMap,
+	},
+	"time": ipack{
+		tMap: time.StuMap,
+		fMap: time.FucMap,
+	},
+	"math": ipack{
+		tMap: math.StuMap,
+		fMap: math.FucMap,
 	},
 }
 
