@@ -157,7 +157,8 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 		Debug("rc.VarMap = %#v", rc.VarMap)
 		ret = InvockCos(f, rc, e)
 	default:
-		Error("left = %#v", l)
+		return l
+		//Error("left = %#v", l)
 	}
 
 	return
