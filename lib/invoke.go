@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cast"
 	"plugin"
 	"reflect"
+	"strings"
 )
 
 func InvockConst(e expr, r *RunNode) (ret interface{}) {
@@ -157,8 +158,46 @@ func Invock(e expr, r *RunNode) (ret interface{}) {
 		Debug("rc.VarMap = %#v", rc.VarMap)
 		ret = InvockCos(f, rc, e)
 	default:
-		return l
-		//Error("left = %#v", l)
+		rl := reflect.ValueOf(e.left)
+		rm := rl.MethodByName(e.method)
+		ins := make([]reflect.Value, 0)
+		for _, i := range e.args {
+			if i != nil {
+				switch i.(type) {
+				case string:
+					is := i.(string)
+					is = strings.ReplaceAll(is, "\"", "")
+					ins = append(ins, reflect.ValueOf(is))
+				default:
+					ins = append(ins, reflect.ValueOf(i))
+				}
+
+				//ins = append(ins, reflect.ValueOf(i))
+			} else {
+				ev := getEmpty()
+				ins = append(ins, reflect.ValueOf(ev))
+				Debug("kind = %#v,nil? = %#v", reflect.ValueOf(ev).Kind(), ev == nil)
+			}
+		}
+		if !rm.IsValid() {
+			Error("method =  %#v", e.method)
+			return nil
+		}
+		//if rm.Type().NumIn() > len(ins) {
+		//      Error("invalid method call in = %v oin = %v ", rm.Type().NumIn(), len(ins))
+		//}
+		rret := rm.Call(ins)
+		rets := make([]interface{}, 0)
+		for _, rr := range rret {
+			rets = append(rets, rr.Interface())
+		}
+		if len(rret) > 0 {
+			e.left = rret[0].Interface()
+		}
+		if len(rets) == 1 {
+			return rets[0]
+		}
+		return rets
 	}
 
 	return
