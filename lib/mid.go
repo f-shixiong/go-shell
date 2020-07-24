@@ -44,6 +44,10 @@ func CompileBinary(x *ast.BinaryExpr, r *RunNode) (ret interface{}) {
 		return CompileExpr(x.X, r) != CompileExpr(x.Y, r)
 	case token.GTR: // >
 		return BGtr(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+	case token.LAND: // &&
+		return BLand(CompileExpr(x.X, r), CompileExpr(x.Y, r))
+	case token.LOR: // ||
+		return BLor(CompileExpr(x.X, r), CompileExpr(x.Y, r))
 
 	//TODO
 	default:
