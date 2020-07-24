@@ -102,7 +102,6 @@ func CompileExpr(x ast.Expr, r *RunNode) (ret interface{}) {
 	case *ast.BinaryExpr:
 		ret = CompileBinary(x, r)
 	case *ast.CallExpr:
-		fmt.Println("debug[", f.Name, "]")
 		noret = true
 		switch f := x.Fun.(type) {
 		case *ast.Ident:
