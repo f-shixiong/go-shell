@@ -1,3 +1,7 @@
+git.xiaojukeji.com/fanshixiong/node-json v0.0.0-20200616135822-0fea7439fe2f h1:r0O/NWDiB7OCIsgoYS8TVFtqJFCoibreVbS4OAgeM2Q=
+git.xiaojukeji.com/fanshixiong/node-json v0.0.0-20200616135822-0fea7439fe2f/go.mod h1:MPrpKvozxw6xEndvqFThVUh+wYnPbhOx6evjNkksqe4=
+git.xiaojukeji.com/fanshixiong/nodejson v0.0.0-20200618114632-9f2d650c49ac h1:97vqf2mt0d/NrdAkC33HwJiLp129L+eJ1Ji4wU22yBI=
+git.xiaojukeji.com/fanshixiong/nodejson v0.0.0-20200618114632-9f2d650c49ac/go.mod h1:bRtQd1ksE0jCXkopXl9j0KluDCJ4dpWeRXkAW5hyCAc=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/mattn/go-runewidth v0.0.3 h1:a+kO+98RDGEfo6asOGMmpodZq4FNtnGP54yps8BzLR4=
 github.com/mattn/go-runewidth v0.0.3/go.mod h1:LwmH8dsx7+W8Uxz3IHJYH5QSwggIsqBzpuz5H//U1FU=

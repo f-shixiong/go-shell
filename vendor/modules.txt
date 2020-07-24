@@ -1,0 +1,8 @@
+# git.xiaojukeji.com/fanshixiong/nodejson v0.0.0-20200618114632-9f2d650c49ac
+git.xiaojukeji.com/fanshixiong/nodejson
+# github.com/mattn/go-runewidth v0.0.3
+github.com/mattn/go-runewidth
+# github.com/peterh/liner v1.1.0
+github.com/peterh/liner
+# github.com/spf13/cast v1.3.0
+github.com/spf13/cast

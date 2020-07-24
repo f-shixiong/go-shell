@@ -347,6 +347,24 @@ func BGtr(l interface{}, r interface{}) bool {
 	return false
 }
 
+func BLand(l interface{}, r interface{}) bool {
+	switch lt := l.(type) {
+	case bool:
+		return lt && cast.ToBool(r)
+	default:
+		return cast.ToBool(l) && cast.ToBool(r)
+	}
+}
+
+func BLor(l interface{}, r interface{}) bool {
+	switch lt := l.(type) {
+	case bool:
+		return lt || cast.ToBool(r)
+	default:
+		return cast.ToBool(l) || cast.ToBool(r)
+	}
+}
+
 func BLeq(l interface{}, r interface{}) bool {
 	switch l := l.(type) {
 	case int:
