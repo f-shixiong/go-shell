@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-var openDebug = true
+var openDebug = false
 var Mode = 0
 
 func Debug(f string, args ...interface{}) {
